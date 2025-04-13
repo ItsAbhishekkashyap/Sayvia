@@ -29,16 +29,17 @@ import { signIn } from 'next-auth/react'
 
 
 
-const page = () => {
+const Page = () => {
 
  
 
 
   // jo request fire krenge backend pe vo debounce request krenge debouncedUsername variable ke through agr username ke through karenge to kuch hoga nhi bs jaise hi key event press krenge to bar bar request jayega jisse load bhut padega 
 
+  // const debouncedUsername  = useDebounceValue(username, 300)
   const { toast } = useToast()
   const router = useRouter();
-
+ 
   // zod implementation
   // use form ka kaam kya hai ki iske andr hm resolvers use kr skte hai
   const form = useForm<z.infer<typeof signInSchema>>
@@ -125,7 +126,7 @@ const page = () => {
             />
 
             <Button type="submit" >
-              Sign in
+              SignIn
             </Button>
 
           </form>
@@ -144,4 +145,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

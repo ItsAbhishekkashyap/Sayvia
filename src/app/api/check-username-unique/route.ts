@@ -10,8 +10,9 @@ const UsernameQuerySchema = z.object({
 
 export async function GET(request: Request) {
 
+
     await dbConnect()
-    // localhost:3000/api/cuu?username=hitesh?phone=android
+    // localhost:3000/api/cuu?username=abhi?phone=android  query params me aise hi values aati hai.
 
     try {
         const {searchParams} = new URL(request.url)
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
         const result = UsernameQuerySchema.safeParse(queryParam)
 
         // ye check kr lega ki queryparams me jo value hai use validate kr lega.
-        console.log(result) // TODO remove
+        //  console.log(result) // TODO remove
         
         if(!result.success){
             const usernameErrors = result.error.format().username?._errors || []

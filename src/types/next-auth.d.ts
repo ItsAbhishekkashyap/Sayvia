@@ -1,6 +1,6 @@
 import 'next-auth'
 
-// ynha pe hm next-auth ke module me jo tnerface hai uske sath kaam kr rhe hai.
+// ynha pe hm next-auth ke module me jo enterface hai uske sath kaam kr rhe hai.
 declare module 'next-auth'{
     interface User{
         _id?: string;

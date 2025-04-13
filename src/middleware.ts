@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
             url.pathname.startsWith('/sign-up') ||
             url.pathname.startsWith('/verify') ||
             url.pathname.startsWith('/')
-            
         ) 
      ){
         return NextResponse.redirect(new URL('/dashboard', request.url))

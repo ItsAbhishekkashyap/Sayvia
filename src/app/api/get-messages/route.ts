@@ -41,7 +41,7 @@ export async function GET(request: Request){
                 },
                 { status: 401 }
             )
-        }
+        } 
 
         return Response.json(
             {

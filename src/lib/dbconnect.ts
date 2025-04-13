@@ -10,7 +10,7 @@ import mongoose from "mongoose";
 // ynha pe hm connecton ke type ko check kr rhe hai
 type ConnectionObject = {
     isConnected?: number
-    // here question mark represent optional
+    // here question mark represent optional hai value ho bhi skti hai aur nhi bhi
 }
 
 // ye ek variable connection hai jiska data type ConnectionObject hai
@@ -23,7 +23,7 @@ async function dbConnect(): Promise<void>{
         console.log("Alredy connected to database");
         return
     }
-    
+     
     try {
          const db = await mongoose.connect(process.env.MONGODB_URI || "", {})
 
@@ -40,4 +40,4 @@ async function dbConnect(): Promise<void>{
     }
 }
 
-export default dbConnect;
+export default dbConnect; 

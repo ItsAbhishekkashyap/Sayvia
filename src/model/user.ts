@@ -8,11 +8,11 @@ export interface Message extends Document{
 
 //ab hm ek message schema bnayenge  ab kyoki ypr hmne interface bnaya hai to usse ynha use bhi krna padega as message schema ka type kya hai.
 
-// niche hmne iska type Schema diya hai aur usme bhi konsa schema to ye ek message schema hai jo tuoescriot me type safety deta hai.
+// niche hmne iska type Schema diya hai aur usme bhi konsa schema to ye ek message schema hai jo typescriot me type safety deta hai.
 
 // iske sentence ko dhan rakhna Schema<Message>
 
-// NOTE* = typrscript me string small me likhi jati hai(string) jb ki schema me Capital hota hai phla word (String)
+// NOTE* = typescript me string small me likhi jati hai(string) jb ki schema me Capital hota hai phla word (String)
 const MessageSchema: Schema<Message> = new Schema({
     content: {
         type: String,
@@ -43,17 +43,17 @@ export interface User extends Document{
 const UserSchema: Schema<User> = new Schema({
     username: {
         type: String,
-        required: [true, "username is required"],
+        required: [true, "Username is required"],
         trim: true,
         unique: true
     },
 
     email:{
         type: String,
-        required: [true, "Mail is required"],
+        required: [true, "Email is required"],
         unique: true,
         match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        , "Please use a valid email addredd"]
+        , "Please use a valid email address"]
     },
 
     password: {
@@ -88,7 +88,7 @@ const UserSchema: Schema<User> = new Schema({
 // Next js edge pe run krta hai usko nhi pta ki first time meri application boot up ho rhi ya isse phle bhi kyi bar ho chuki hai.
 // to ye thoda issue aata hai isliye hm mongoose ko jb export krte hai vo thoda s a different hota hai.
 
-// to jo hm user model export karenge vo do tarike se karenge ki hoskta hai ki oahle se bna hua ho air agr nhi ho to aur lga ke uske jgha mongoose me jake databse bna de.
+// to jo hm user model export karenge vo do tarike se karenge ki hoskta hai ki pahle se bna hua ho aur agr nhi ho to aur lga ke uske jgha mongoose me jake databse bna de.
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema)
 // ye syntax typescript hai as mongoose.Model<User>

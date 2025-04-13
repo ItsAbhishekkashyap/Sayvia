@@ -9,7 +9,7 @@ export const usernameValidation = z
     .string()
     .min(2,"Username must be atleast 2 characters")
     .max(20,"Username must be must be no more than 20 characters")
-    .regex(/^[a-zA-Z0-9_]+$/, "Username must not contain special character") 
+    .regex(/^[a-zA-Z0-9_]+$/, "Username must not contain special character")
  // zod itna hi hai so take a chill pill.
 
  // ab hm signup ki validation pe kaam karenge
@@ -19,7 +19,9 @@ export const usernameValidation = z
     username: usernameValidation, //seedha ynhi pe use kr liya
     email: z.string().email({message: "Invalid email address"}),
     password: z.string().min(8, {message: "Password must be at least 8 characters"})
+ });
 
- })
+
+
 
  // ynha signup schema ka validation ho gya
