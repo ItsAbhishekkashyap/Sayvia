@@ -1,65 +1,34 @@
+// src/app/api/get-messages/route.ts
 import { getServerSession } from "next-auth";
+// import { authOptions } from "../../auth/[...nextauth]/options";
 import { authOptions } from "../auth/[...nextauth]/options";
+import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/model/user";
-import { User } from "next-auth";
-import mongoose from "mongoose";
 
-export async function GET(request: Request){
-    await dbConnect()
-    const session = await getServerSession(authOptions)
-    const user: User = session?.user
+export async function GET() {
+  await dbConnect();
 
-    if (!session || !session.user) {
-        return Response.json(
-            {
-                success: false,
-                message: "Not Authenticated"
-            },
-            { status: 401 }
-        )
-    }
+  const session = await getServerSession(authOptions);
 
-    const userId = new mongoose.Types.ObjectId(user._id);
-    // ynha pe agr user._id string me bhi hua to mongoose ke object id me convert hoke jayega aur yhi hme chahiye.
+  if (!session || !session.user) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized" },
+      { status: 401 }
+    );
+  }
 
-    try {
+  const user = await UserModel.findOne({ username: session.user.username });
 
-        // here we are going to work on agreegation pipeline.
-        const user = await UserModel.aggregate([
-            {$match: {id: userId}},
-            {$unwind: '$messages'},
-            {$sort: {'messages.createdAt': -1}},
-            {$group: {_id: '$_id', messages: {$push: '$messages'}}}
-        ])
+  if (!user) {
+    return NextResponse.json(
+      { success: false, message: "User not found" },
+      { status: 404 }
+    );
+  }
 
-        if (!user || user.length === 0){
-            return Response.json(
-                {
-                    success: false,
-                    message: "User not found"
-                },
-                { status: 401 }
-            )
-        } 
-
-        return Response.json(
-            {
-                success: true,
-                message: user[0].messages
-            },
-            { status: 200 }
-        )
-
-
-    } catch (error) {
-        console.log("An unexpected error occured:", error)
-        return Response.json(
-            {
-                success: false,
-                message: "Not authenticated"
-            },
-            { status: 500 }
-        )
-    }
+  return NextResponse.json({
+    success: true,
+    messages: user.messages.reverse(), // show latest first
+  });
 }

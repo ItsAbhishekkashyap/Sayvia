@@ -1,16 +1,16 @@
-// ab hm ynha pe apna saara logic likhenge signUp ka.
 import dbConnect from "@/lib/dbconnect";
-//database connection hr ek route pe lgta hai
 import UserModel from "@/model/user";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 
 export async function POST(request: Request) {
-  // jb kisi ne request kri tb hmne database ko connect kra.
+  // Connect to the database
   await dbConnect();
+
   try {
     const { username, email, password } = await request.json();
-    // sbse pahle check krna hai ki user ka email exist krta hai aur vo verified hai  kya?
+
+    // 1. Check if the username is already taken and verified
     const existingUserVerifiedByUsername = await UserModel.findOne({
       username,
       isVerified: true,
@@ -20,36 +20,81 @@ export async function POST(request: Request) {
       return Response.json(
         {
           success: false,
+          message: "Username already taken",
         },
         { status: 400 }
       );
     }
 
+    // 2. Handle unverified username
+    const existingUserByUsername = await UserModel.findOne({ username });
+    let verifyCode: string;
+
+    if (existingUserByUsername && !existingUserByUsername.isVerified) {
+      verifyCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate the verification code
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      existingUserByUsername.email = email; // Update email if needed
+      existingUserByUsername.password = hashedPassword;
+      existingUserByUsername.verifyCode = verifyCode;
+      existingUserByUsername.verifyCodeExpiry = new Date(Date.now() + 3600000); // 1 hour expiration
+      await existingUserByUsername.save();
+
+      // Send verification email again
+      const emailResponse = await sendVerificationEmail(
+        email,
+        username,
+        verifyCode
+      );
+
+      if (!emailResponse.success) {
+        return Response.json(
+          {
+            success: false,
+            message: emailResponse.message,
+          },
+          { status: 500 }
+        );
+      }
+
+      return Response.json(
+        {
+          success: true,
+          message: "Verification code resent. Please verify your email.",
+        },
+        { status: 200 }
+      );
+    }
+
+    // 3. Check if the user exists by email
     const existingUserByEmail = await UserModel.findOne({ email });
 
-    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     if (existingUserByEmail) {
-      // ab agr user aaya hi pahli bar hai to usee fresh register karaynge
+      // If user already exists but is not verified
       if (existingUserByEmail.isVerified) {
         return Response.json(
           {
             success: false,
-            message: "User alredy exists with this email",
+            message: "User already exists with this email",
           },
           { status: 400 }
         );
       } else {
+        verifyCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate verification code
+
         const hashedPassword = await bcrypt.hash(password, 10);
         existingUserByEmail.password = hashedPassword;
         existingUserByEmail.verifyCode = verifyCode;
-        existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000);
+        existingUserByEmail.verifyCodeExpiry = new Date(Date.now() + 3600000); // 1 hour expiration
         await existingUserByEmail.save();
       }
     } else {
+      // If it's a new user, create the user
+      verifyCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate verification code
+
       const hashedPassword = await bcrypt.hash(password, 10);
       const expiryDate = new Date();
-      // is new date ke andr hme ek object mil rha aur object reference point ke andr ek area hai aur uske andr jo values hai vo change hoti hai.
-      expiryDate.setHours(expiryDate.getHours() + 1);
+      expiryDate.setHours(expiryDate.getHours() + 1); // Set expiration for the verification code
 
       const newUser = new UserModel({
         username,
@@ -65,7 +110,7 @@ export async function POST(request: Request) {
       await newUser.save();
     }
 
-    //send verificaton Email
+    // Send verification email
     const emailResponse = await sendVerificationEmail(
       email,
       username,
@@ -73,7 +118,7 @@ export async function POST(request: Request) {
     );
 
     if (!emailResponse.success) {
-      return Response.json( 
+      return Response.json(
         {
           success: false,
           message: emailResponse.message,
@@ -85,12 +130,11 @@ export async function POST(request: Request) {
     return Response.json(
       {
         success: true,
-        message: "User registerd successfully. Please verify your email",
+        message: "User registered successfully. Please verify your email",
       },
       { status: 201 }
     );
   } catch (error) {
-    // phle error console kra lete hai ye acha hoga.
     console.error("Error registering user", error);
     return Response.json(
       {

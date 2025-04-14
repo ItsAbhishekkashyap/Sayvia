@@ -1,103 +1,85 @@
-import mongoose, {Schema, Document} from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 
-//  niche hmne ek interface bnaya hai message nam se jo typescript me bnana pdta hai. Pahle hme interface bnana padega. ye ek custom data type hai
-export interface Message extends Document{
-    content: string;
-    createdAt: Date
+// --------------------
+// Message Interface
+// --------------------
+export interface IMessage extends Document {
+  content: string;
+  createdAt: Date;
 }
 
-//ab hm ek message schema bnayenge  ab kyoki ypr hmne interface bnaya hai to usse ynha use bhi krna padega as message schema ka type kya hai.
+// --------------------
+// Message Schema
+// --------------------
+const MessageSchema: Schema<IMessage> = new Schema({
+  content: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-// niche hmne iska type Schema diya hai aur usme bhi konsa schema to ye ek message schema hai jo typescriot me type safety deta hai.
-
-// iske sentence ko dhan rakhna Schema<Message>
-
-// NOTE* = typescript me string small me likhi jati hai(string) jb ki schema me Capital hota hai phla word (String)
-const MessageSchema: Schema<Message> = new Schema({
-    content: {
-        type: String,
-        required: true
-    },
-
-    createdAt:{
-        type: Date,
-        required: true,
-        default: Date.now
-    }
-})
-
-// Jaese hmne message ka Interface bnaya ab user ka bnana pde ga.
-
-export interface User extends Document{
-    username: string;
-    email: string;
-    password: string;
-    verifyCode: string;
-    verifyCodeExpiry: Date;
-    isAcceptingMessage: boolean;
-    isVerified: boolean;
-    messages: Message[]
+// --------------------
+// User Interface
+// --------------------
+export interface IUser extends Document {
+  username: string;
+  email: string;
+  password: string;
+  verifyCode: string;
+  verifyCodeExpiry: Date;
+  isAcceptingMessage: boolean;
+  isVerified: boolean;
+  messages: Types.DocumentArray<IMessage>; // 🟢 Fix: Use DocumentArray
 }
 
-// ab aese hi exactly iska schema bnnana padega.
-const UserSchema: Schema<User> = new Schema({
-    username: {
-        type: String,
-        required: [true, "Username is required"],
-        trim: true,
-        unique: true
-    },
+// --------------------
+// User Schema
+// --------------------
+const UserSchema: Schema<IUser> = new Schema({
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+    trim: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+    unique: true,
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please use a valid email address"],
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+  },
+  verifyCode: {
+    type: String,
+    required: [true, "Verify Code is required"],
+  },
+  verifyCodeExpiry: {
+    type: Date,
+    required: [true, "Verify Code expiry is required"],
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  isAcceptingMessage: {
+    type: Boolean,
+    default: true,
+  },
+  messages: [MessageSchema], // 🟢 Embed message schema
+});
 
-    email:{
-        type: String,
-        required: [true, "Email is required"],
-        unique: true,
-        match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        , "Please use a valid email address"]
-    },
-
-    password: {
-        type: String,
-        required: [true, "Password is required"]
-    },
-
-    verifyCode: {
-        type: String,
-        required: [true, "VerifyCode is required"]
-    },
-
-    verifyCodeExpiry: {
-        type: Date,
-        required: [true, "Verify Code expiry is required"]
-    },
-
-    isVerified: {
-        type: Boolean,
-        default: false,
-    },
-
-    isAcceptingMessage: {
-        type: Boolean,
-        default: true,
-    },
-
-    messages: [MessageSchema]
-
-})
-
-// Next js edge pe run krta hai usko nhi pta ki first time meri application boot up ho rhi ya isse phle bhi kyi bar ho chuki hai.
-// to ye thoda issue aata hai isliye hm mongoose ko jb export krte hai vo thoda s a different hota hai.
-
-// to jo hm user model export karenge vo do tarike se karenge ki hoskta hai ki pahle se bna hua ho aur agr nhi ho to aur lga ke uske jgha mongoose me jake databse bna de.
-
-const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema)
-// ye syntax typescript hai as mongoose.Model<User>
+// --------------------
+// User Model
+// --------------------
+const UserModel =
+  (mongoose.models.User as mongoose.Model<IUser>) ||
+  mongoose.model<IUser>("User", UserSchema);
 
 export default UserModel;
-
-
-// Very important jb mongoose ke through hm schema likhte hai to  vo likhte hai hm mongodb ke liye.
-
-// lekin jo schemas folder me hm schemas likhenge vo likhenge dusre purpose ke liye like for validation.
-
-// Refer to schemas folder
