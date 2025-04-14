@@ -29,9 +29,17 @@ yarn-error.log*
 .env*.local
 .env
 
+# Local environment files
+.env
+.env.local
+*.env
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Open .gitignore in your editor
+notepad .gitignore
