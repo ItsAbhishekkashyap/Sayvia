@@ -1,6 +1,4 @@
-"use client"
-
-import MessageCard from '@/components/MessageCard';
+'use client'
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -10,41 +8,26 @@ import { acceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
-import { Loader2, RefreshCcw } from 'lucide-react';
+import { Copy, Loader2, RefreshCcw, Mail, Link as LinkIcon, ToggleLeft, ToggleRight, Filter, ArrowUpDown, Search } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { motion, AnimatePresence } from 'framer-motion';
+import MessageCard from '@/components/MessageCard';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Dashboard = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState<'newest' | 'oldest'>('newest');
+  const [filterOption, setFilterOption] = useState<'all' | 'recent'>('all');
 
   const { toast } = useToast();
   const { data: session } = useSession();
-
-  const handleDeleteMessage = async (messageId: string) => {
-    try {
-      const response = await axios.delete<ApiResponse>(`/api/delete-message/${messageId}`);
-      if (response.data.success) {
-        setMessages((prev) => prev.filter((message) => message._id !== messageId));
-        toast({ title: "Deleted", description: "Message successfully deleted" });
-      } else {
-        toast({
-          title: "Error",
-          description: response.data.message || "Failed to delete message",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      toast({
-        title: "Error",
-        description: axiosError.response?.data.message || "Something went wrong while deleting",
-        variant: "destructive"
-      });
-    }
-  };
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema)
@@ -52,144 +35,321 @@ const Dashboard = () => {
   const { register, watch, setValue } = form;
   const acceptMessages = watch('acceptMessages');
 
-  const fetchAcceptMessage = useCallback(async () => {
-    setIsSwitchLoading(true);
-    try {
-      const response = await axios.get<ApiResponse>('/api/accept-messages');
-      setValue('acceptMessages', response.data.isAcceptingMessage);
-    } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      toast({
-        title: "Error",
-        description: axiosError.response?.data.message || "Failed to fetch message settings",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSwitchLoading(false);
+  // Filter and sort messages
+  const getFilteredSortedMessages = useCallback(() => {
+    let result = [...messages];
+    
+    // Filter by search query
+    if (searchQuery) {
+      result = result.filter(msg => 
+        msg.content.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
-  }, [setValue]);
+    
+    // Filter by time
+    if (filterOption === 'recent') {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      result = result.filter(msg => 
+        new Date(msg.createdAt) > oneWeekAgo
+      );
+    }
+    
+    // Sort
+    result.sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return sortOption === 'newest' 
+        ? dateB.getTime() - dateA.getTime() 
+        : dateA.getTime() - dateB.getTime();
+    });
+    
+    return result;
+  }, [messages, searchQuery, sortOption, filterOption]);
 
-  const fetchMessages = useCallback(async (refresh: boolean = false) => {
+  // Fetch data
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get<ApiResponse>('/api/get-messages');
-      setMessages(response.data.messages || []);
-      if (refresh) {
-        toast({
-          title: "Refreshed Messages",
-          description: "Showing latest messages"
-        });
-      }
+      const [messagesRes, settingsRes] = await Promise.all([
+        axios.get<ApiResponse>('/api/get-messages'),
+        axios.get<ApiResponse>('/api/accept-messages')
+      ]);
+      setMessages(messagesRes.data.messages || []);
+      setValue('acceptMessages', settingsRes.data.isAcceptingMessage);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
         title: "Error",
-        description: axiosError.response?.data.message || "Failed to fetch messages",
+        description: axiosError.response?.data.message || "Failed to fetch data",
         variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setValue, toast]);
 
   useEffect(() => {
-    if (!session || !session.user) return;
-    fetchMessages();
-    fetchAcceptMessage();
-  }, [session, fetchMessages, fetchAcceptMessage]);
+    if (!session?.user) return;
+    fetchData();
+  }, [session, fetchData]);
 
-  const handleSwitchChange = async () => {
+  // Handlers
+  const handleDeleteMessage = async (messageId: string) => {
     try {
-      const response = await axios.post<ApiResponse>('/api/accept-messages', {
-        acceptMessages: !acceptMessages
-      });
-      setValue('acceptMessages', !acceptMessages);
-      toast({ title: response.data.message });
+      await axios.delete(`/api/delete-message/${messageId}`);
+      setMessages(prev => prev.filter(m => m._id !== messageId));
+      toast({ title: "Deleted", description: "Message removed" });
     } catch (error) {
-      const axiosError = error as AxiosError<ApiResponse>;
-      toast({
-        title: "Error",
-        description: axiosError.response?.data.message || "Failed to toggle setting",
-        variant: "destructive"
-      });
+      handleError(error, "Failed to delete message");
     }
   };
 
-  const { username } = session?.user || {};
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileURL = `${baseUrl}/u/${username}`;
+  const toggleMessageAcceptance = async () => {
+    try {
+      setIsSwitchLoading(true);
+      const { data } = await axios.post<ApiResponse>('/api/accept-messages', {
+        acceptMessages: !acceptMessages
+      });
+      setValue('acceptMessages', !acceptMessages);
+      toast({ title: data.message });
+    } catch (error) {
+      handleError(error, "Failed to update settings");
+    } finally {
+      setIsSwitchLoading(false);
+    }
+  };
 
-  const copytoClipboard = () => {
-    navigator.clipboard.writeText(profileURL);
+  const handleError = (error: unknown, defaultMsg: string) => {
+    const axiosError = error as AxiosError<ApiResponse>;
     toast({
-      title: "URL copied",
-      description: "The profile URL has been copied to your clipboard"
+      title: "Error",
+      description: axiosError.response?.data.message || defaultMsg,
+      variant: "destructive"
     });
   };
 
-  if (!session || !session.user) {
-    return <div className="text-center text-lg mt-10 text-muted-foreground">Please login</div>;
+  const copyProfileUrl = () => {
+    const url = `${window.location.origin}/u/${session?.user?.username}`;
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+    toast({ title: "Copied!", description: "Profile link copied to clipboard" });
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (!session?.user) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="text-center text-lg text-muted-foreground">
+          Please login to view dashboard
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className='my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-background text-foreground rounded w-full max-w-6xl shadow-md'>
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
-
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={profileURL}
-            disabled
-            className="flex-1 p-2 rounded border border-border bg-muted text-muted-foreground"
-          />
-          <Button onClick={copytoClipboard}>Copy</Button>
-        </div>
-      </div>
-
-      <div className="mb-4 flex items-center">
-        <Switch
-          {...register('acceptMessages')}
-          checked={acceptMessages}
-          onCheckedChange={handleSwitchChange}
-          disabled={isSwitchLoading}
-        />
-        <span className='ml-2 text-sm'>
-          Accept Messages: {acceptMessages ? 'On' : 'Off'}
-        </span>
-      </div>
-
-      <Separator />
-
-      <Button
-        className='mt-4'
-        variant="outline"
-        onClick={(e) => {
-          e.preventDefault();
-          fetchMessages(true);
-        }}
+    <div className="container mx-auto mt-24 px-4 py-8">
+      {/* Header Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
       >
-        {isLoading ? (
-          <Loader2 className='h-4 w-4 animate-spin' />
-        ) : (
-          <RefreshCcw className='h-4 w-4' />
-        )}
-      </Button>
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Your Secret Inbox
+        </h1>
+        <p className="text-muted-foreground mt-2">
+          Manage your anonymous messages
+        </p>
+      </motion.div>
 
-      <div className='mt-4 grid grid-cols-1 md:grid-cols-2 gap-6'>
-        {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <MessageCard
-              key={message._id as string}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
-          ))
-        ) : (
-          <p className="text-muted-foreground">No messages to display.</p>
-        )}
-      </div>
+      {/* Profile Link Card */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 }}
+        className="bg-gradient-to-br from-purple-900/20 to-pink-900/10 border border-purple-900/30 rounded-xl p-6 mb-8 shadow-lg"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <LinkIcon className="h-5 w-5 text-purple-400" />
+              Your Unique Profile Link
+            </h2>
+            <p className="text-muted-foreground text-sm mt-1">
+              Share this to receive anonymous messages
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 p-3 rounded-lg bg-background border border-border truncate">
+              {`${window.location.origin}/u/${session.user.username}`}
+            </div>
+            <Button 
+              onClick={copyProfileUrl}
+              size="sm"
+              className="gap-2 bg-purple-600 hover:bg-purple-700"
+            >
+              {copied ? "Copied!" : "Copy"}
+              <Copy className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Settings Card */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2 }}
+        className="bg-background border border-border rounded-xl p-6 mb-8 shadow-sm"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-900/50">
+              <Mail className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            </div>
+            <div>
+              <h3 className="font-medium">Message Settings</h3>
+              <p className="text-sm text-muted-foreground">
+                {acceptMessages ? "Accepting new messages" : "Not accepting messages"}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {isSwitchLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  {acceptMessages ? "ON" : "OFF"}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={toggleMessageAcceptance}
+                  className="p-0 h-6 w-11 rounded-full bg-gray-200 dark:bg-gray-800"
+                >
+                  <span className={`flex items-center justify-center h-5 w-5 rounded-full transition-all ${acceptMessages ? 'bg-purple-600 translate-x-[1.35rem]' : 'bg-gray-400 translate-x-0.5'}`}>
+                    {acceptMessages ? (
+                      <ToggleRight className="h-3.5 w-3.5 text-white" />
+                    ) : (
+                      <ToggleLeft className="h-3.5 w-3.5 text-white" />
+                    )}
+                  </span>
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Messages Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-semibold flex items-center gap-2">
+              Your Messages
+              <span className="text-sm bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-300 px-2 py-1 rounded-full">
+                {getFilteredSortedMessages().length}
+              </span>
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              {messages.length} total messages
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <div className="relative w-full sm:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search messages..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            
+            <div className="flex gap-2">
+              <Select value={filterOption} onValueChange={(value) => setFilterOption(value as "all" | "recent")}>
+                <SelectTrigger className="w-[120px]">
+                  <Filter className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Filter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="recent">Recent (7d)</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={sortOption} onValueChange={(value) => setSortOption(value as "newest" | "oldest")}>
+                <SelectTrigger className="w-[120px]">
+                  <ArrowUpDown className="h-4 w-4 mr-2" />
+                  <SelectValue placeholder="Sort" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="oldest">Oldest</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Button
+                variant="outline"
+                onClick={() => fetchData()}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCcw className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <Separator className="mb-6" />
+
+        <AnimatePresence>
+          {getFilteredSortedMessages().length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {getFilteredSortedMessages().map((message) => (
+                <motion.div
+                  key={message._id as string}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <MessageCard
+                    message={message}
+                    onMessageDelete={handleDeleteMessage}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center justify-center py-12 text-center"
+            >
+              <Mail className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-medium text-muted-foreground">
+                {messages.length === 0 ? "No messages yet" : "No matching messages"}
+              </h3>
+              <p className="text-muted-foreground mt-2 max-w-md">
+                {messages.length === 0 
+                  ? "Share your profile link to start receiving anonymous messages"
+                  : "Try adjusting your search or filters"}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

@@ -13,7 +13,7 @@ export default function ClientLayoutWithTheme({
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+      <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
         {/* <Navbar /> */}
         {children}
       </div>

@@ -8,11 +8,15 @@ import { ThemeProvider } from "@/context/ThemeContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dashboard | Whispr✨",
+  title: "Dashboard | Sayvia✨",
   description: "Your private dashboard",
+  icons: {
+    icon: "/chat.svg", 
+    
+  }
 };
 
-// ✅ Create a Client Component to use the hook
+//  Create a Client Component to use the hook
 import ClientLayoutWithTheme from "@/components/ClientLayoutWithTheme"; // We'll make this next
 
 export default function RootLayout({

@@ -11,8 +11,12 @@ import LayoutWithTheme from "@/components/LayoutWithTheme";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Whispr✨",
+  title: "Sayvia✨",
   description: "Send anonymous messages to your friends!",
+  icons: {
+    icon: "/phone.svg", 
+    
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
