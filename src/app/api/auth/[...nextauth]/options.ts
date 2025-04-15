@@ -62,7 +62,13 @@ export const authOptions: NextAuthOptions = {
 
             return token
         },
-        async session({ session, token }) {
+        async session({ session, token, user }) {
+            const dbUser = await UserModel.findOne({ email: session.user.email });
+            session.user._id = dbUser._id.toString();
+            session.user.username = dbUser.username;
+            session.user.isVerified = dbUser.isVerified;
+            session.user.isAcceptingMessages = dbUser.isAcceptingMessages;
+            session.user.isPremium = dbUser.isPremium;
             if (token) {
                 session.user._id = token._id
                 session.user.isVerified = token.isVerified

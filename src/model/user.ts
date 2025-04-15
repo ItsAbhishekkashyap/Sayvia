@@ -1,30 +1,17 @@
-import mongoose, { Schema, Document, Types } from "mongoose";
+import mongoose, { Schema, Document, Types, model, models } from "mongoose";
 
-// --------------------
-// Message Interface
-// --------------------
+// Message Interface & Schema remains same
 export interface IMessage extends Document {
   content: string;
   createdAt: Date;
 }
 
-// --------------------
-// Message Schema
-// --------------------
 const MessageSchema: Schema<IMessage> = new Schema({
-  content: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  content: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
-// --------------------
-// User Interface
-// --------------------
+// Enhanced User Interface
 export interface IUser extends Document {
   username: string;
   email: string;
@@ -33,53 +20,45 @@ export interface IUser extends Document {
   verifyCodeExpiry: Date;
   isAcceptingMessage: boolean;
   isVerified: boolean;
-  messages: Types.DocumentArray<IMessage>; // 🟢 Fix: Use DocumentArray
+  messages: Types.DocumentArray<IMessage>;
+  resetToken?: string;
+  resetTokenExpiry?: Date;
+  isPremium: boolean;
 }
 
-// --------------------
-// User Schema
-// --------------------
 const UserSchema: Schema<IUser> = new Schema({
   username: {
     type: String,
     required: [true, "Username is required"],
     trim: true,
-    unique: true,
+    unique: true
   },
   email: {
     type: String,
     required: [true, "Email is required"],
     unique: true,
-    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please use a valid email address"],
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please use a valid email address"]
   },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
-  },
-  verifyCode: {
-    type: String,
-    required: [true, "Verify Code is required"],
-  },
-  verifyCodeExpiry: {
-    type: Date,
-    required: [true, "Verify Code expiry is required"],
-  },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-  isAcceptingMessage: {
-    type: Boolean,
-    default: true,
-  },
-  messages: [MessageSchema], // 🟢 Embed message schema
-});
 
-// --------------------
-// User Model
-// --------------------
-const UserModel =
-  (mongoose.models.User as mongoose.Model<IUser>) ||
-  mongoose.model<IUser>("User", UserSchema);
+  isPremium: {
+    type: Boolean,
+    default: false
+  },  
+  password: { type: String, required: [true, "Password is required"] },
+  verifyCode: { type: String, required: [true, "Verify Code is required"] },
+  verifyCodeExpiry: { type: Date, required: [true, "Verify Code expiry is required"] },
+  isVerified: { type: Boolean, default: false },
+  isAcceptingMessage: { type: Boolean, default: true },
+  messages: [MessageSchema],
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date }
+}, { timestamps: true });
 
-export default UserModel;
+// Add indexes
+UserSchema.index({ resetToken: 1 }, { unique: true, sparse: true });
+UserSchema.index({ resetTokenExpiry: 1 });
+
+// Create model
+const User = models.User || model<IUser>("User", UserSchema);
+
+export default User;

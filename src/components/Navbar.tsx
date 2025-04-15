@@ -16,7 +16,7 @@ import {
 
 const Navbar = () => {
   const { data: session } = useSession();
-  const user: User = session?.user;
+  const user: User = session?.user as User;
   const { isDarkMode, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -26,13 +26,13 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo + Mobile Menu Button */}
           <div className="flex items-center">
-            <button 
+            <button
               className="md:hidden mr-4"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
-            
+
             <Link href="/" className="flex items-center space-x-2">
               <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Sayvia✨
@@ -50,6 +50,15 @@ const Navbar = () => {
                     Welcome, <span className="font-medium text-foreground">{user?.username || user?.email}</span>
                   </span>
                 </div>
+
+                {/* 💎 Add Upgrade button if not premium */}
+                {!user?.isPremium && (
+                  <Link href="/dashboard/upgrade">
+                    <Button variant="outline" className="text-purple-600 border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900 transition-all">
+                      Upgrade 💎
+                    </Button>
+                  </Link>
+                )}
               </>
             ) : (
               <>
@@ -69,9 +78,9 @@ const Navbar = () => {
 
           {/* Right Section - Theme + User */}
           <div className="flex items-center space-x-4">
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={toggleTheme}
               className="hover:bg-purple-500/10 text-foreground"
             >
@@ -123,13 +132,22 @@ const Navbar = () => {
                     Hi, <span className="font-medium text-foreground">{user?.username || user?.email}</span>
                   </span>
                 </div>
-                <Button 
-                  onClick={() => signOut()} 
+                <Button
+                  onClick={() => signOut()}
                   className="w-full justify-start"
                   variant="ghost"
                 >
                   Sign Out
                 </Button>
+
+                {!user?.isPremium && (
+                  <Link href="/dashboard/upgrade">
+                    <Button variant="outline" className="w-full justify-start">
+                      Upgrade 💎
+                    </Button>
+                  </Link>
+                )}
+
               </div>
             ) : (
               <div className="space-y-2">

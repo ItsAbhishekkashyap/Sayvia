@@ -1,27 +1,36 @@
-import 'next-auth'
+import { DefaultSession } from 'next-auth';
+import NextAuth from 'next-auth';
 
-// ynha pe hm next-auth ke module me jo enterface hai uske sath kaam kr rhe hai.
-declare module 'next-auth'{
-    interface User{
-        _id?: string;
-        isVerified?: boolean;
-        isAcceptingMessages?: boolean;
-        username?: string;
-    }
-    interface Session{
-        user: {
-            _id?: string;
-            isVerified?: boolean;
-            isAcceptingMessages?: boolean;
-            username?: string;
+declare module 'next-auth' {
+  interface User {
+    _id?: string;
+    username?: string;
+    email?: string;
+    isVerified?: boolean;
+    isAcceptingMessages?: boolean;
+    resetToken?: string;          // Add if needed in User object
+    resetTokenExpiry?: Date; 
+    isPremium?: boolean;
+         // Add if needed in User object
+  }
 
-        } & DefaultSession['user']
-    }
-} 
+  interface Session {
+    user: {
+      _id?: string;
+      username?: string;
+      isVerified?: boolean;
+      isAcceptingMessages?: boolean;
+      isPremium: boolean;
+      // Add resetToken fields only if you need them in session
+    } & DefaultSession['user']
+  }
+}
 
-declare module 'next-auth/jwt'{
-    interface JWT {
-        _id?: string;
-        isVerified?: boolean;
-    }
+declare module 'next-auth/jwt' {
+  interface JWT {
+    _id?: string;
+    username?: string;
+    isVerified?: boolean;
+    // Add resetToken fields only if you need them in JWT
+  }
 }
