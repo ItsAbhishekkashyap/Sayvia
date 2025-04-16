@@ -111,11 +111,11 @@ const Navbar = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer" >
                     {session?.user?.isPremium && (
-<Link href="/dashboard/premium">
-                    <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> 💎 Premium Dashboard</span>
-                    </Link>
+                      <Link href="/dashboard/premium">
+                        <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> 💎 Premium Dashboard</span>
+                      </Link>
                     )}
-                    
+
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
