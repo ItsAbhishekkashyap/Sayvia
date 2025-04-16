@@ -13,12 +13,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion'
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
   const user: User = session?.user as User;
   const { isDarkMode, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  if (status === 'loading') return null
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
@@ -52,13 +56,21 @@ const Navbar = () => {
                 </div>
 
                 {/* 💎 Add Upgrade button if not premium */}
-                {!user?.isPremium && (
-                  <Link href="/dashboard/upgrade">
-                    <Button variant="outline" className="text-purple-600 border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900 transition-all">
-                      Upgrade 💎
-                    </Button>
-                  </Link>
+                <AnimatePresence mode="wait">
+                {!session?.user?.isPremium && (
+                 <motion.div
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 exit={{ opacity: 0 }}
+               >
+                 <Link href="/dashboard/upgrade">
+                   <Button variant="outline" className="w-full justify-start">
+                     Upgrade 💎
+                   </Button>
+                 </Link>
+               </motion.div>
                 )}
+                </AnimatePresence>
               </>
             ) : (
               <>
@@ -140,13 +152,21 @@ const Navbar = () => {
                   Sign Out
                 </Button>
 
-                {!user?.isPremium && (
-                  <Link href="/dashboard/upgrade">
-                    <Button variant="outline" className="w-full justify-start">
-                      Upgrade 💎
-                    </Button>
-                  </Link>
+                <AnimatePresence mode="wait">
+                {!session?.user?.isPremium && (
+                 <motion.div
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 exit={{ opacity: 0 }}
+               >
+                 <Link href="/dashboard/upgrade">
+                   <Button variant="outline" className="w-full justify-start">
+                     Upgrade 💎
+                   </Button>
+                 </Link>
+               </motion.div>
                 )}
+                </AnimatePresence>
 
               </div>
             ) : (
