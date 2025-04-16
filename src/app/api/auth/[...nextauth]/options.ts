@@ -75,16 +75,32 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      const dbUser = await UserModel.findOne({ email: session.user.email });
+      if (!session.user?.email) {
+        console.warn("⚠️ No email in session.user");
+        return session;
+      }
+      console.log("🧠 Session payload before DB lookup:", session);
 
-      session.user._id = dbUser._id.toString();
-      session.user.username = dbUser.username;
-      session.user.isVerified = dbUser.isVerified;
-      session.user.isAcceptingMessages = dbUser.isAcceptingMessages;
-      session.user.isPremium = dbUser.isPremium;
-      session.user.messages = dbUser.messages || []; // ✅ Now TypeScript won't complain
 
-      return session;
+      try {
+        const dbUser = await UserModel.findOne({ email: session.user.email });
+        if (!dbUser) {
+          console.warn("⚠️ No user found in DB for email:", session.user.email);
+          return session;
+        }
+
+        session.user._id = dbUser._id.toString();
+        session.user.username = dbUser.username;
+        session.user.isVerified = dbUser.isVerified;
+        session.user.isAcceptingMessages = dbUser.isAcceptingMessages;
+        session.user.isPremium = dbUser.isPremium;
+        session.user.messages = dbUser.messages || [];
+
+        return session;
+      } catch (err) {
+        console.error("🧨 Error in session callback:", err);
+        return session; // Fallback — don't crash the API route
+      }
     },
   },
 
@@ -104,5 +120,4 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/sign-in",
     error: "/auth/error",
   },
-  
 };
