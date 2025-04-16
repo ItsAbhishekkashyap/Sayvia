@@ -21,6 +21,7 @@ import { Sparkles, Lock } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
 
+export const dynamic = 'force-dynamic';
 
 
 
@@ -35,10 +36,7 @@ const Dashboard = () => {
   const [filterOption, setFilterOption] = useState<'all' | 'recent'>('all');
 
   const { toast } = useToast();
-  const { data: session, } = useSession();
-  
-
-  
+  const { data: session } = useSession();
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema)
@@ -46,39 +44,32 @@ const Dashboard = () => {
   const { register, watch, setValue } = form;
   const acceptMessages = watch('acceptMessages');
 
-  // Filter and sort messages
   const getFilteredSortedMessages = useCallback(() => {
     let result = [...messages];
-    
-    // Filter by search query
+
     if (searchQuery) {
-      result = result.filter(msg => 
+      result = result.filter(msg =>
         msg.content.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    
-    // Filter by time
+
     if (filterOption === 'recent') {
       const oneWeekAgo = new Date();
       oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-      result = result.filter(msg => 
-        new Date(msg.createdAt) > oneWeekAgo
-      );
+      result = result.filter(msg => new Date(msg.createdAt) > oneWeekAgo);
     }
-    
-    // Sort
+
     result.sort((a, b) => {
       const dateA = new Date(a.createdAt);
       const dateB = new Date(b.createdAt);
-      return sortOption === 'newest' 
-        ? dateB.getTime() - dateA.getTime() 
+      return sortOption === 'newest'
+        ? dateB.getTime() - dateA.getTime()
         : dateA.getTime() - dateB.getTime();
     });
-    
+
     return result;
   }, [messages, searchQuery, sortOption, filterOption]);
 
-  // Fetch data
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -91,9 +82,9 @@ const Dashboard = () => {
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
-        title: "Error",
-        description: axiosError.response?.data.message || "Failed to fetch data",
-        variant: "destructive"
+        title: 'Error',
+        description: axiosError.response?.data.message || 'Failed to fetch data',
+        variant: 'destructive'
       });
     } finally {
       setIsLoading(false);
@@ -105,14 +96,13 @@ const Dashboard = () => {
     fetchData();
   }, [session, fetchData]);
 
-  // Handlers
   const handleDeleteMessage = async (messageId: string) => {
     try {
       await axios.delete(`/api/delete-message/${messageId}`);
       setMessages(prev => prev.filter(m => m._id !== messageId));
-      toast({ title: "Deleted", description: "Message removed" });
+      toast({ title: 'Deleted', description: 'Message removed' });
     } catch (error) {
-      handleError(error, "Failed to delete message");
+      handleError(error, 'Failed to delete message');
     }
   };
 
@@ -125,7 +115,7 @@ const Dashboard = () => {
       setValue('acceptMessages', !acceptMessages);
       toast({ title: data.message });
     } catch (error) {
-      handleError(error, "Failed to update settings");
+      handleError(error, 'Failed to update settings');
     } finally {
       setIsSwitchLoading(false);
     }
@@ -134,9 +124,9 @@ const Dashboard = () => {
   const handleError = (error: unknown, defaultMsg: string) => {
     const axiosError = error as AxiosError<ApiResponse>;
     toast({
-      title: "Error",
+      title: 'Error',
       description: axiosError.response?.data.message || defaultMsg,
-      variant: "destructive"
+      variant: 'destructive'
     });
   };
 
@@ -144,10 +134,9 @@ const Dashboard = () => {
     const url = `${window.location.origin}/u/${session?.user?.username}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
-    toast({ title: "Copied!", description: "Profile link copied to clipboard" });
+    toast({ title: 'Copied!', description: 'Profile link copied to clipboard' });
     setTimeout(() => setCopied(false), 2000);
   };
-
   
 
   
