@@ -99,7 +99,10 @@ export const authOptions: NextAuthOptions = {
         session.user.isPremium = dbUser.isPremium;
         session.user.messages = dbUser.messages || [];
 
-        console.log("✅ Session hydrated:", session.user.username);
+        
+// if (status === "authenticated") {
+//   console.log(session.user.username); // Now it's safe
+// }
         return session;
       } catch (err) {
         console.error("❌ Error in session callback:", err);

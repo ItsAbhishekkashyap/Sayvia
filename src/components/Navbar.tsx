@@ -15,12 +15,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const user: User = session?.user as User;
   const { isDarkMode, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   console.log("Navbar session:", session)
-  console.log("Session from Navbar:", session, "Status:", status);
 
 
   return (
@@ -111,8 +110,8 @@ const Navbar = () => {
                     <span className="text-red-600">Sign out</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer" >
-                    {session?.user?.isPremium && (
-                      <Link href="/dashboard/premium">
+                    {!session?.user?.isPremium && (
+<Link href="/dashboard/premium">
                     <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> 💎 Premium Dashboard</span>
                     </Link>
                     )}

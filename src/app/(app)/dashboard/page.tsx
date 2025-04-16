@@ -8,7 +8,7 @@ import { acceptMessageSchema } from '@/schemas/acceptMessageSchema';
 import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
-import { Copy, Loader2, RefreshCcw, Mail, Link as LinkIcon, ToggleLeft, ToggleRight, Filter, ArrowUpDown, Search } from 'lucide-react';
+import { Copy, Loader2, RefreshCcw, Mail, Link as LinkIcon, ToggleLeft, ToggleRight, Filter, ArrowUpDown, Search, LogIn } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Sparkles, Lock } from "lucide-react";
+import { useRouter } from 'next/navigation';
 
 
 
@@ -34,7 +35,7 @@ const Dashboard = () => {
   const [filterOption, setFilterOption] = useState<'all' | 'recent'>('all');
 
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { data: session, } = useSession();
   
 
   
@@ -149,14 +150,111 @@ const Dashboard = () => {
 
   
 
-  if (!session?.user) {
+  
+
+
+  const SignInPrompt = () => {
+    const router = useRouter();
+  
     return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <div className="text-center text-lg text-muted-foreground">
-          sign-in first to access Dashboard
+      <div className="relative h-[60vh] w-full mt-10 overflow-hidden bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-gray-900/80 dark:to-gray-800/80">
+        {/* Floating particles background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-indigo-200/50 dark:bg-purple-900/30"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                width: Math.random() * 8 + 4,
+                height: Math.random() * 8 + 4,
+                opacity: Math.random() * 0.4 + 0.1,
+              }}
+              animate={{
+                x: [
+                  Math.random() * window.innerWidth,
+                  Math.random() * window.innerWidth,
+                ],
+                y: [
+                  Math.random() * window.innerHeight,
+                  Math.random() * window.innerHeight,
+                ],
+              }}
+              transition={{
+                duration: Math.random() * 15 + 10,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "linear",
+              }}
+            />
+          ))}
+        </div>
+  
+        <div className="relative z-10 flex h-full flex-col items-center justify-center p-6">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 100 }}
+            className="flex flex-col items-center justify-center space-y-6 rounded-2xl bg-white/80 p-8 shadow-lg backdrop-blur-sm dark:bg-gray-800/80 dark:shadow-gray-700/20"
+          >
+            {/* Animated lock icon */}
+            <motion.div
+              animate={{
+                y: [0, -5, 0],
+                rotate: [0, 5, -5, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/50"
+            >
+              <Lock className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+            </motion.div>
+  
+            <div className="space-y-2 text-center">
+              <motion.h3
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-2xl font-semibold text-gray-900 dark:text-white"
+              >
+                Secure Dashboard Access
+              </motion.h3>
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-muted-foreground"
+              >
+                Sign in to access your personalized dashboard
+              </motion.p>
+            </div>
+  
+            <motion.div
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Button
+                onClick={() => router.push('/sign-in')}
+                className="group flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 font-medium text-white shadow-lg transition-all hover:shadow-xl"
+              >
+                <LogIn className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                <span>Sign In Now</span>
+              </Button>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     );
+  };
+
+
+  if (!session?.user) {
+    return <SignInPrompt />;
   }
 
 
