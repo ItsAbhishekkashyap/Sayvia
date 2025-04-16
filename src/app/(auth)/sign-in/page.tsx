@@ -47,6 +47,14 @@ const SignInPage = () => {
         identifier: data.identifier,
         password: data.password,
       })
+      
+      if (result?.ok) {
+        router.replace('/dashboard')
+        toast({
+          title: "Welcome back!",
+          description: "You've successfully signed in",
+        })
+      }
 
       if (result?.error) {
         throw new Error(result.error)

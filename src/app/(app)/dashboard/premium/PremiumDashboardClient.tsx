@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check, Crown, Palette, Link2, Zap, Shield, Ban, BarChart } from "lucide-react";
 import { Bar } from 'react-chartjs-2';
-
+// import {spinner} from "@/components/ui/spinner"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -21,7 +21,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Session } from 'next-auth';
 
 ChartJS.register(
   CategoryScale,
@@ -39,12 +38,7 @@ const themes = [
   { name: "Monochrome", color: "bg-gradient-to-r from-gray-300 to-gray-700" },
 ];
 
-interface PremiumDashboardClientProps {
-    session: Session;
-  }
-
-export default function PremiumDashboardClient({ session }: PremiumDashboardClientProps) {
-    const [mounted, setMounted] = useState(false);
+export default function PremiumDashboardClient({ session }: { session: any }) {
   const [theme, setTheme] = useState("Default");
   const [customLink, setCustomLink] = useState("");
   const [aiReply, setAiReply] = useState(true);
@@ -52,21 +46,52 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
   const [isSaving, setIsSaving] = useState(false);
   const [showFullReport, setShowFullReport] = useState(false);
   const [isPremium, setIsPremium] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    setMounted(true); // ✅ ensure we’re on the client
-  }, []);
 
   useEffect(() => {
-    if (!mounted) return; // 🛑 only run fetch after mount
+    if (!session) {
+      // Redirect to login if there's no session
+      router.push("/sign-in");
+      return;
+    }
+
+    // Check if the user is premium (performing fetch or checking session here)
+    const checkPremiumStatus = async () => {
+      try {
+        const res = await fetch("/api/premium/check-access");
+        const data = await res.json();
+
+        if (data.isPremium) {
+          setIsPremium(true);
+        } else {
+          // Redirect to normal dashboard if not premium
+          router.push("/dashboard");
+        }
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to check premium status" });
+      } finally {
+        setIsLoading(false); // Stop loading
+      }
+    };
+
+    checkPremiumStatus();
+  }, [session, router]);
+
+
+
+
+
+
+
+
+  useEffect(() => {
     fetch("/api/premium/check-access")
       .then((res) => res.json())
       .then((data) => setIsPremium(data.isPremium))
       .catch(() => setIsPremium(false));
-  }, [mounted]);
-
-  
+  }, []);
 
   const analyticsData = useMemo(() => {
     const days = showFullReport 
@@ -91,7 +116,6 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
     };
   }, [showFullReport]);
 
-  if (!mounted) return null;
   const handleUpgrade = async () => {
     const res = await fetch("/api/premium/upgrade", {
       method: "POST",

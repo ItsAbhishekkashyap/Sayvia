@@ -21,7 +21,7 @@ const LayoutWithTheme = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-    <ErrorBoundary>
+    <ErrorBoundary >
       <Navbar />
       {children}
       </ErrorBoundary>

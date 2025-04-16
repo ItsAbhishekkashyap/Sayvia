@@ -19,7 +19,7 @@ const Navbar = () => {
   const user: User = session?.user as User;
   const { isDarkMode, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  console.log("Session user:", session?.user);
+  console.log("Navbar session:", session)
 
 
   return (
