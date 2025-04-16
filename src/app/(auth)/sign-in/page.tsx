@@ -34,7 +34,7 @@ const SignInPage = () => {
         redirect: false,
         identifier: data.identifier,
         password: data.password,
-        callbackUrl: '/dashboard'
+        callbackUrl: '/sign-in'
         
       })
       if (result?.ok) {
