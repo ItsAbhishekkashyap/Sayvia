@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Sparkles, Lock } from "lucide-react";
-import { useRouter } from 'next/navigation';
+
 
 
 
@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   const { toast } = useToast();
   const { data: session } = useSession();
-  const router = useRouter();
+  
 
   
 
@@ -147,17 +147,13 @@ const Dashboard = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  useEffect(() => {
-    if (!session?.user) {
-      router.push('/sign-in'); // Replace '/sign-in' with your actual sign-in route
-    }
-  }, [session, router]);
+  
 
   if (!session?.user) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
         <div className="text-center text-lg text-muted-foreground">
-          Redirecting to login...
+          sign-in first to access Dashboard
         </div>
       </div>
     );
