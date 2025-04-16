@@ -9,13 +9,20 @@ import { ApiResponse } from '@/types/ApiResponse';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { Copy, Loader2, RefreshCcw, Mail, Link as LinkIcon, ToggleLeft, ToggleRight, Filter, ArrowUpDown, Search } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import MessageCard from '@/components/MessageCard';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+import { Sparkles, Lock } from "lucide-react";
+import { useRouter } from 'next/router';
+
+
+
+
 
 const Dashboard = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -28,6 +35,9 @@ const Dashboard = () => {
 
   const { toast } = useToast();
   const { data: session } = useSession();
+  const router = useRouter();
+
+  
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema)
@@ -137,16 +147,26 @@ const Dashboard = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  useEffect(() => {
+    if (!session?.user) {
+      router.push('/sign-in'); // Replace '/sign-in' with your actual sign-in route
+    }
+  }, [session, router]);
+
   if (!session?.user) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
         <div className="text-center text-lg text-muted-foreground">
-          Please login to view dashboard
+          Redirecting to login...
         </div>
       </div>
     );
   }
 
+
+
+
+  
   return (
     <div className="container mx-auto mt-24 px-4 py-8">
       {/* Header Section */}
@@ -182,7 +202,7 @@ const Dashboard = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="flex-1 p-3 rounded-lg bg-background border border-border truncate">
-              {`${window.location.origin}/u/${session.user.username}`}
+              {`${window.location.origin}/u/${session?.user.username}`}
             </div>
             <Button 
               onClick={copyProfileUrl}
