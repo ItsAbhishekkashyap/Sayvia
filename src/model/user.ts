@@ -24,6 +24,19 @@ export interface IUser extends Document {
   resetToken?: string;
   resetTokenExpiry?: Date;
   isPremium: boolean;
+  profileTheme?: 'default' | 'ocean' | 'sunset' | 'lavender' | 'monochrome';
+  customLink?: string;
+
+  aiSuggestions?: boolean;
+  messageModeration?: boolean;
+  adFree?: boolean;
+
+  // for future analytics
+  analytics?: {
+    views: number;
+    messagesReceived: number;
+    last7Days: any[];
+  };
 }
 
 const UserSchema: Schema<IUser> = new Schema({
@@ -49,6 +62,21 @@ const UserSchema: Schema<IUser> = new Schema({
   verifyCodeExpiry: { type: Date, required: [true, "Verify Code expiry is required"] },
   isVerified: { type: Boolean, default: false },
   isAcceptingMessage: { type: Boolean, default: true },
+  profileTheme: { type: String, default: 'default' },
+  customLink: { type: String, unique: true, sparse: true },
+
+  aiSuggestions: { type: Boolean, default: false },
+  messageModeration: { type: Boolean, default: false },
+  adFree: { type: Boolean, default: false },
+
+  analytics: {
+    type: Object,
+    default: {
+      views: 0,
+      messagesReceived: 0,
+      last7Days: [],
+    },
+  },
   messages: [MessageSchema],
   resetToken: { type: String },
   resetTokenExpiry: { type: Date }
