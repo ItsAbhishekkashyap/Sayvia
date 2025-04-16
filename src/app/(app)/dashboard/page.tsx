@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Sparkles, Lock } from "lucide-react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 
 
