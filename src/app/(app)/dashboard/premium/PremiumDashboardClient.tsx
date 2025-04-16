@@ -20,6 +20,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Session } from 'next-auth';
 
 ChartJS.register(
   CategoryScale,
@@ -37,7 +38,11 @@ const themes = [
   { name: "Monochrome", color: "bg-gradient-to-r from-gray-300 to-gray-700" },
 ];
 
-export default function PremiumDashboardClient({ session }: { session: any }) {
+interface PremiumDashboardClientProps {
+    session: Session;
+  }
+
+export default function PremiumDashboardClient({ session }: { session: Session }) {
   const [theme, setTheme] = useState("Default");
   const [customLink, setCustomLink] = useState("");
   const [aiReply, setAiReply] = useState(true);

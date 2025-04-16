@@ -15,7 +15,7 @@ export default async function PremiumDashboard() {
   }
 
   await dbconnect();
-  const user = await User.findOne({ email: session.user.email });
+  const user = await User.findOne({ email: session?.user?.email });
 
   if (!user || !user.isPremium) {
     redirect('/dashboard'); // or wherever you want to send non-premium users
