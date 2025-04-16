@@ -85,7 +85,7 @@ export const authOptions: NextAuthOptions = {
       try {
         const dbUser = await UserModel.findOne({ email: session.user.email });
         if (!dbUser) {
-          console.warn("⚠️ No user found in DB for email:", session.user.email);
+          console.error("❌ No user found in DB for session email:", session.user.email);
           return session;
         }
 
@@ -96,22 +96,25 @@ export const authOptions: NextAuthOptions = {
         session.user.isPremium = dbUser.isPremium;
         session.user.messages = dbUser.messages || [];
 
+        console.log("✅ Session hydrated:", session.user.username);
         return session;
       } catch (err) {
-        console.error("🧨 Error in session callback:", err);
-        return session; // Fallback — don't crash the API route
+        console.error("❌ Error in session callback:", err);
+    return session; // Fallback — don't crash the API route
       }
     },
   },
 
   cookies: {
     sessionToken: {
-      name: `__Secure-next-auth.session-token`,
+      name: process.env.NODE_ENV === 'production'
+        ? '__Secure-next-auth.session-token'
+        : 'next-auth.session-token',
       options: {
         httpOnly: true,
         sameSite: "lax",
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production", // should be false in dev
       },
     },
   },

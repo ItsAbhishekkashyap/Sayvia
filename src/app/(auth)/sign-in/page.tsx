@@ -46,15 +46,18 @@ const SignInPage = () => {
         redirect: false,
         identifier: data.identifier,
         password: data.password,
+        callbackUrl: "/dashboard",
       })
       
       if (result?.ok) {
-        router.replace('/dashboard')
+        router.push(result.url || '/dashboard')
         toast({
           title: "Welcome back!",
           description: "You've successfully signed in",
         })
       }
+      console.log("Login result:", result);
+
 
       if (result?.error) {
         throw new Error(result.error)

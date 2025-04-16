@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user: User = session?.user as User;
   const { isDarkMode, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   console.log("Navbar session:", session)
+  console.log("Session from Navbar:", session, "Status:", status);
 
 
   return (
