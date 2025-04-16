@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check, Crown, Palette, Link2, Zap, Shield, Ban, BarChart } from "lucide-react";
 import { Bar } from 'react-chartjs-2';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -42,7 +43,8 @@ interface PremiumDashboardClientProps {
     session: Session;
   }
 
-export default function PremiumDashboardClient({ session }: { session: Session }) {
+export default function PremiumDashboardClient({ session }: PremiumDashboardClientProps) {
+    const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState("Default");
   const [customLink, setCustomLink] = useState("");
   const [aiReply, setAiReply] = useState(true);
@@ -53,11 +55,18 @@ export default function PremiumDashboardClient({ session }: { session: Session }
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true); // ✅ ensure we’re on the client
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return; // 🛑 only run fetch after mount
     fetch("/api/premium/check-access")
       .then((res) => res.json())
       .then((data) => setIsPremium(data.isPremium))
       .catch(() => setIsPremium(false));
-  }, []);
+  }, [mounted]);
+
+  
 
   const analyticsData = useMemo(() => {
     const days = showFullReport 
@@ -82,6 +91,7 @@ export default function PremiumDashboardClient({ session }: { session: Session }
     };
   }, [showFullReport]);
 
+  if (!mounted) return null;
   const handleUpgrade = async () => {
     const res = await fetch("/api/premium/upgrade", {
       method: "POST",

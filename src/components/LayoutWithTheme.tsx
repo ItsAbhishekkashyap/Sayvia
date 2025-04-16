@@ -4,6 +4,7 @@
 import React, { useEffect } from "react"
 import { useTheme } from "@/context/ThemeContext"
 import Navbar from "@/components/Navbar"
+import ErrorBoundary from "./ErrorBoundary"
 
 const LayoutWithTheme = ({ children }: { children: React.ReactNode }) => {
   const { isDarkMode } = useTheme()
@@ -20,8 +21,10 @@ const LayoutWithTheme = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
+    <ErrorBoundary>
       <Navbar />
       {children}
+      </ErrorBoundary>
     </>
   )
 }

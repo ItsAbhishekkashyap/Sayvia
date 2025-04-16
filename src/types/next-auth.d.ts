@@ -10,12 +10,16 @@ declare module 'next-auth' {
     isAcceptingMessages?: boolean;
     resetToken?: string;          // Add if needed in User object
     resetTokenExpiry?: Date; 
-    isPremium?: boolean;
+    isPremium: boolean;
          // Add if needed in User object
   }
 
   interface Session {
     user: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      username?: string;
       _id?: string;
       username?: string;
       isVerified?: boolean;
