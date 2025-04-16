@@ -13,19 +13,21 @@ export default function ResetPasswordForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Properly extract token from URL
-    const urlToken = searchParams?.get('token');
-    console.log('Extracted token from URL:', urlToken); // Debug log
-    
+    if (!searchParams) return;
+  
+    const urlToken = searchParams.get('token');
+    console.log('Extracted token from URL:', urlToken);
+  
     if (!urlToken) {
       setMessage({ text: 'Invalid reset link - missing token', isError: true });
     } else {
       setToken(urlToken);
     }
-
+  
     console.log('Full URL:', window.location.href);
-  console.log('Search params:', Array.from(searchParams?.entries() || []));
+    console.log('Search params:', Array.from(searchParams.entries()));
   }, [searchParams]);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +86,7 @@ export default function ResetPasswordForm() {
         <input
           type="hidden"
           value={token}
-          onChange={(e) => setToken(e.target.value)}
+          readOnly
         />
         
         <div>
