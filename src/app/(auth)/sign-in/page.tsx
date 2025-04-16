@@ -34,7 +34,7 @@ const SignInPage = () => {
         redirect: false,
         identifier: data.identifier,
         password: data.password,
-        callbackUrl: '/dashboard'
+        
       })
       if (result?.ok) {
         router.push(result.url || '/dashboard'); // ✅ Explicit redirect
