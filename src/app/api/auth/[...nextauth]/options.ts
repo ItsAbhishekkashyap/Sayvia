@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/model/user";
 
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -75,6 +76,8 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
+
+      await dbConnect();
       if (!session.user?.email) {
         console.warn("⚠️ No email in session.user");
         return session;
