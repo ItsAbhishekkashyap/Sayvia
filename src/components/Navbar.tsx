@@ -109,6 +109,14 @@ const Navbar = () => {
                   <DropdownMenuItem className="cursor-pointer" onClick={() => signOut()}>
                     <span className="text-red-600">Sign out</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer" >
+                    {session?.user?.isPremium && (
+                      <Link href="/dashboard/premium">
+                    <span className="font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> 💎 Premium Dashboard</span>
+                    </Link>
+                    )}
+                    
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
