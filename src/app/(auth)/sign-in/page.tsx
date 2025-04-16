@@ -33,8 +33,12 @@ const SignInPage = () => {
       const result = await signIn('credentials', {
         redirect: false,
         identifier: data.identifier,
-        password: data.password
+        password: data.password,
+        
       })
+      if (result?.ok) {
+        router.push(result.url || '/dashboard'); // ✅ Explicit redirect
+      }
 
       if (result?.error) {
         throw new Error(result.error)
