@@ -144,6 +144,14 @@ const Dashboard = () => {
 
   const SignInPrompt = () => {
     const router = useRouter();
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
   
     return (
       <div className="relative h-[60vh] w-full mt-10 overflow-hidden bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-gray-900/80 dark:to-gray-800/80">
@@ -154,20 +162,20 @@ const Dashboard = () => {
               key={i}
               className="absolute rounded-full bg-indigo-200/50 dark:bg-purple-900/30"
               initial={{
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
+                x: Math.random() * windowSize.width,
+                y: Math.random() * windowSize.height,
                 width: Math.random() * 8 + 4,
                 height: Math.random() * 8 + 4,
                 opacity: Math.random() * 0.4 + 0.1,
               }}
               animate={{
                 x: [
-                  Math.random() * window.innerWidth,
-                  Math.random() * window.innerWidth,
+                  Math.random() * windowSize.width,
+                  Math.random() * windowSize.width,
                 ],
                 y: [
-                  Math.random() * window.innerHeight,
-                  Math.random() * window.innerHeight,
+                  Math.random() * windowSize.height,
+                  Math.random() * windowSize.height,
                 ],
               }}
               transition={{
