@@ -37,7 +37,8 @@ const Dashboard = () => {
   const [filterOption, setFilterOption] = useState<'all' | 'recent'>('all');
 
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  console.log("Session from Navbar:", session, "Status:", status);
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema)

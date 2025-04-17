@@ -15,6 +15,7 @@ export const authOptions: NextAuthOptions = {
             },
 
             async authorize(credentials: any): Promise<any> {
+                console.log("🔐 Authorize called with:", credentials);
                 await dbConnect()
                 try {
                     const user = await UserModel.findOne({
@@ -50,6 +51,21 @@ export const authOptions: NextAuthOptions = {
         })
     ],
 
+    cookies: {
+        sessionToken: {
+          name: process.env.NODE_ENV === 'production'
+            ? '__Secure-next-auth.session-token'
+            : 'next-auth.session-token',
+          options: {
+            httpOnly: true,
+            sameSite: "lax",
+            path: "/",
+            secure: process.env.NODE_ENV === "production", // should be false in dev
+          },
+        },
+      },
+      
+
     callbacks: {
         async jwt({ token, user }) {
 
@@ -62,21 +78,32 @@ export const authOptions: NextAuthOptions = {
 
             return token
         },
-        async session({ session, token, user }) {
-            const dbUser = await UserModel.findOne({ email: session.user.email });
-            session.user._id = dbUser._id.toString();
-            session.user.username = dbUser.username;
-            session.user.isVerified = dbUser.isVerified;
-            session.user.isAcceptingMessages = dbUser.isAcceptingMessages;
-            session.user.isPremium = dbUser.isPremium;
-            if (token) {
-                session.user._id = token._id
-                session.user.isVerified = token.isVerified
-                session.user.isAcceptingMessages = token.isAcceptingMessages as boolean
-                session.user.username = token.username
+        async session({ session, token }) {
+            console.log("🔥 SESSION CALLBACK STARTED");
+          
+            try {
+              const dbUser = await UserModel.findOne({ email: session.user.email });
+          
+              if (!dbUser) {
+                console.error("❌ No user found in DB for session email:", session.user.email);
+                return session;
+              }
+          
+              session.user._id = dbUser._id.toString();
+              session.user.username = dbUser.username;
+              session.user.isVerified = dbUser.isVerified;
+              session.user.isAcceptingMessages = dbUser.isAcceptingMessages;
+              session.user.isPremium = dbUser.isPremium;
+              session.user.messages = dbUser.messages || [];
+          
+              console.log("✅ Session hydrated:", session.user.username);
+              return session;
+            } catch (err) {
+              console.error("❌ Error in session callback:", err);
+              return session; // fallback
             }
-            return session
-        },
+          }
+          ,
     },
 
 
