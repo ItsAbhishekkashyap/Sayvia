@@ -35,10 +35,11 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState<'newest' | 'oldest'>('newest');
   const [filterOption, setFilterOption] = useState<'all' | 'recent'>('all');
+  
 
   const { toast } = useToast();
-  const { data: session, status } = useSession();
-  console.log("Session from Navbar:", session, "Status:", status);
+  const { data: session } = useSession();
+
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema)
