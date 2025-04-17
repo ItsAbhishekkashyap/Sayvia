@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { Check, Crown, Palette, BarChart, MessageSquare, Shield, Link2, Ban } from "lucide-react";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { Footer } from "@/components/Footer";
+// import { Footer } from "@/components/Footer";
 
 export default function UpgradePage() {
   const { data: session } = useSession();
@@ -145,7 +145,7 @@ export default function UpgradePage() {
 
       {/* Footer */}
     </motion.div>
-      <Footer/>
+      
     </>
   );
 }
