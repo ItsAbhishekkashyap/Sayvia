@@ -5,11 +5,11 @@ import { motion } from 'framer-motion';
 
 export function Footer() {
   const links = [
-    { name: 'Privacy Policy', href: '/legal/privacy-policy' },
-    { name: 'Terms & Conditions', href: '/legal/terms-and-conditions' },
-    { name: 'Cancellation Policy', href: '/legal/cancellation-refund' },
-    { name: 'Delivery Policy', href: '/legal/shipping-delivery' },
-    { name: 'Contact Us', href: '/legal/contact-us' },
+    { name: 'Privacy Policy', href: '/' },
+    { name: 'Terms & Conditions', href: '/' },
+    { name: 'Cancellation Policy', href: '/' },
+    { name: 'Delivery Policy', href: '/' },
+    { name: 'Contact Us', href: '/' },
   ];
 
   return (
