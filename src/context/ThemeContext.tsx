@@ -10,11 +10,15 @@ import {
 } from "react";
 
 type ThemeContextType = {
+  colorTheme:string
   isDarkMode: boolean;
   toggleTheme: () => void;
+  setColorTheme: (theme: string) => void;
+  
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -29,9 +33,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, [isDarkMode]);
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
+  const { colorTheme, setColorTheme } = useTheme()
+
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{colorTheme, setColorTheme, isDarkMode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
