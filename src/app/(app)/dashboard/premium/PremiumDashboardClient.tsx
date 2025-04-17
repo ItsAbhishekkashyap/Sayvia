@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check, Crown, Palette, Link2, Zap, Shield, Ban, BarChart } from "lucide-react";
 import { Bar } from 'react-chartjs-2';
-// import {spinner} from "@/components/ui/spinner"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -21,6 +20,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Footer } from '@/components/Footer';
 
 ChartJS.register(
   CategoryScale,
@@ -46,45 +46,7 @@ export default function PremiumDashboardClient({ session }: { session: any }) {
   const [isSaving, setIsSaving] = useState(false);
   const [showFullReport, setShowFullReport] = useState(false);
   const [isPremium, setIsPremium] = useState<boolean | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-
-
-  useEffect(() => {
-    if (!session) {
-      // Redirect to login if there's no session
-      router.push("/sign-in");
-      return;
-    }
-
-    // Check if the user is premium (performing fetch or checking session here)
-    const checkPremiumStatus = async () => {
-      try {
-        const res = await fetch("/api/premium/check-access");
-        const data = await res.json();
-
-        if (data.isPremium) {
-          setIsPremium(true);
-        } else {
-          // Redirect to normal dashboard if not premium
-          router.push("/dashboard");
-        }
-      } catch (error) {
-        toast({ title: "Error", description: "Failed to check premium status" });
-      } finally {
-        setIsLoading(false); // Stop loading
-      }
-    };
-
-    checkPremiumStatus();
-  }, [session, router]);
-
-
-
-
-
-
-
 
   useEffect(() => {
     fetch("/api/premium/check-access")
@@ -153,7 +115,8 @@ export default function PremiumDashboardClient({ session }: { session: any }) {
   };
 
   return (
-    // your JSX here...
+    <>
+    {/* // your JSX here... */}
     <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -410,5 +373,8 @@ export default function PremiumDashboardClient({ session }: { session: any }) {
                 </motion.div>
             </div>
         </motion.div>
+        {/* Footer */}
+        <Footer/>
+        </>
   );
 }

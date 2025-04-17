@@ -6,6 +6,7 @@ import { useParams } from "next/navigation"
 import { Loader2, Sparkles, Send, MessageSquare } from "lucide-react"
 import { toast } from "@/components/ui/use-toast"
 import { motion, AnimatePresence } from "framer-motion"
+import { Footer } from "@/components/Footer"
 
 export default function MessagePage() {
   const { username } = useParams()
@@ -72,6 +73,7 @@ export default function MessagePage() {
   }
 
   return (
+    <>
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -166,5 +168,8 @@ export default function MessagePage() {
         )}
       </AnimatePresence>
     </motion.div>
+    {/* Footer */}
+    <Footer />
+    </>
   )
 }

@@ -1,5 +1,4 @@
 'use client'
-
 import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -7,29 +6,18 @@ import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation'
 import { signInSchema } from '@/schemas/signInSchema'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { Form } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const SignInPage = () => {
   const { toast } = useToast()
   const router = useRouter()
-  const { data: session, status } = useSession()
   const [isLoading, setIsLoading] = useState(false)
-
- 
-
-
-  // ✅ Redirect if already authenticated
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.replace('/dashboard')
-    }
-  }, [status, router])
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -46,18 +34,11 @@ const SignInPage = () => {
         redirect: false,
         identifier: data.identifier,
         password: data.password,
-        callbackUrl: "/dashboard",
+        
       })
-      
       if (result?.ok) {
-        router.push(result.url || '/dashboard')
-        toast({
-          title: "Welcome back!",
-          description: "You've successfully signed in",
-        })
+        router.push(result.url || '/dashboard'); // ✅ Explicit redirect
       }
-      console.log("Login result:", result);
-
 
       if (result?.error) {
         throw new Error(result.error)
@@ -79,15 +60,6 @@ const SignInPage = () => {
     } finally {
       setIsLoading(false)
     }
-  }
-
-  // ✅ Prevent showing form while loading or already authenticated
-  if (status === 'loading' || status === 'authenticated') {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    )
   }
 
   return (

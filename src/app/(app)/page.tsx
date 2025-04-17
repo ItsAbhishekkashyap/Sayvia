@@ -19,8 +19,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { Link } from '@react-email/components';
+import { Footer } from '@/components/Footer';
+
+
 
 const Home = () => {
+
+
   return (
     <div className="min-h-screen  flex flex-col">
       {/* Animated Hero Section */}
@@ -198,126 +203,147 @@ const Home = () => {
 
       {/* Final CTA */}
       <section className="w-full py-16 md:py-24 relative overflow-hidden">
-  {/* Floating gradient circles background */}
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    {[...Array(6)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10"
-        initial={{ 
-          y: Math.random() * 100,
-          x: Math.random() * 100,
-          opacity: 0,
-          scale: 0.5
-        }}
-        animate={{
-          y: [null, Math.random() * 100 - 50],
-          x: [null, Math.random() * 100 - 50],
-          opacity: [0, 0.2, 0],
-          scale: [0.5, 1.2]
-        }}
-        transition={{
-          duration: 15 + Math.random() * 30,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-        style={{
-          width: `${100 + Math.random() * 200}px`,
-          height: `${100 + Math.random() * 200}px`,
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          filter: 'blur(40px)'
-        }}
-      />
-    ))}
-  </div>
+        {/* Floating gradient circles background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10"
+              initial={{
+                y: Math.random() * 100,
+                x: Math.random() * 100,
+                opacity: 0,
+                scale: 0.5
+              }}
+              animate={{
+                y: [null, Math.random() * 100 - 50],
+                x: [null, Math.random() * 100 - 50],
+                opacity: [0, 0.2, 0],
+                scale: [0.5, 1.2]
+              }}
+              transition={{
+                duration: 15 + Math.random() * 30,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              style={{
+                width: `${100 + Math.random() * 200}px`,
+                height: `${100 + Math.random() * 200}px`,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                filter: 'blur(40px)'
+              }}
+            />
+          ))}
+        </div>
 
-  <div className="container px-4 md:px-6 relative z-10">
-    <motion.div
-      className="mx-auto max-w-4xl"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      viewport={{ once: true }}
-    >
-      {/* Two-column layout on desktop */}
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
-        {/* Left column - Visual element */}
-        <motion.div
-          className="flex-1"
-          initial={{ x: -20 }}
-          whileInView={{ x: 0 }}
-          transition={{ type: 'spring', stiffness: 100 }}
-        >
-          <div className="relative aspect-square max-w-[400px] mx-auto">
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 shadow-2xl overflow-hidden">
-              {/* Mock message bubbles */}
-              <div className="absolute top-8 left-8 bg-white/90 dark:bg-gray-900/90 p-4 rounded-xl max-w-[60%] shadow-sm">
-                <p className="text-sm">What&#39;s something you&#39;ve never told anyone? 👀</p>
-              </div>
-              <div className="absolute bottom-12 right-8 bg-purple-600 text-white p-4 rounded-xl max-w-[70%] shadow-sm">
-                <p className="text-sm">You have the most amazing smile! 😊</p>
-              </div>
-              <div className="absolute top-1/2 left-1/4 bg-white/90 dark:bg-gray-900/90 p-4 rounded-xl max-w-[50%] shadow-sm">
-                <p className="text-sm">Your work inspires me daily</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Right column - Content */}
-        <div className="flex-1">
+        <div className="container px-4 md:px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-center md:text-left"
+            className="mx-auto max-w-4xl"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 mb-4">
-              Ready for Honest Feedback?
-            </h2>
-            <p className="text-lg text-muted-foreground mb-6">
-              Sayvia lets you receive <span className="font-medium text-purple-300">authentic messages</span> while keeping senders completely anonymous.
-            </p>
-            
-            <div className="space-y-4 max-w-md mx-auto md:mx-0">
-              {/* <div className="flex flex-col sm:flex-row gap-3">
+            {/* Two-column layout on desktop */}
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center">
+              {/* Left column - Visual element */}
+              <motion.div
+                className="flex-1"
+                initial={{ x: -20 }}
+                whileInView={{ x: 0 }}
+                transition={{ type: 'spring', stiffness: 100 }}
+              >
+                <div className="relative aspect-square max-w-[400px] mx-auto">
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 shadow-2xl overflow-hidden">
+                    {/* Mock message bubbles */}
+                    <div className="absolute top-8 left-8 bg-white/90 dark:bg-gray-900/90 p-4 rounded-xl max-w-[60%] shadow-sm">
+                      <p className="text-sm">What&#39;s something you&#39;ve never told anyone? 👀</p>
+                    </div>
+                    <div className="absolute bottom-12 right-8 bg-purple-600 text-white p-4 rounded-xl max-w-[70%] shadow-sm">
+                      <p className="text-sm">You have the most amazing smile! 😊</p>
+                    </div>
+                    <div className="absolute top-1/2 left-1/4 bg-white/90 dark:bg-gray-900/90 p-4 rounded-xl max-w-[50%] shadow-sm">
+                      <p className="text-sm">Your work inspires me daily</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right column - Content */}
+              <div className="flex-1">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-center md:text-left"
+                >
+                  <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 mb-4">
+                    Ready for Honest Feedback?
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-6">
+                    Sayvia lets you receive <span className="font-medium text-purple-300">authentic messages</span> while keeping senders completely anonymous.
+                  </p>
+
+                  <div className="space-y-4 max-w-md mx-auto md:mx-0">
+                    {/* <div className="flex flex-col sm:flex-row gap-3">
                 <Input
                   placeholder="yourname"
                   className="flex-1 bg-background/90 backdrop-blur-sm border-purple-300/50 focus:border-purple-400 text-center md:text-left"
                 />
                 <span className="self-center text-muted-foreground">.Sayvia.me</span>
               </div> */}
-              
-              <Button 
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-purple-500/30 transition-all py-6 text-lg"
-                size="lg"
-              >
-                <Link href="/dashboard" style={{ color: 'inherit' }} className='flex items-center no-underline text-white'>
-                Claim Your Link Now
-                </Link>
-              </Button>
-              
-              <p className="text-xs text-muted-foreground">
-                Join thousands receiving honest feedback anonymously
-              </p>
+
+                    <Button
+                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-purple-500/30 transition-all py-6 text-lg"
+                      size="lg"
+                    >
+                      <Link href="/dashboard" style={{ color: 'inherit' }} className='flex items-center no-underline text-white'>
+                        Claim Your Link Now
+                      </Link>
+                    </Button>
+
+                    <p className="text-xs text-muted-foreground">
+                      Join thousands receiving honest feedback anonymously
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
-      </div>
-    </motion.div>
-  </div>
-</section>
+      </section>
+
+
 
       {/* Footer */}
-      <footer className="w-full py-6 border-t border-purple-900/20 mt-auto">
-        <div className="container px-4 md:px-6 flex flex-col items-center">
+      {/* <footer className="w-full py-8 border-t border-purple-900/20 mt-auto bg-background/40 backdrop-blur-sm">
+        <div className="container px-4 md:px-6 flex flex-col items-center space-y-4">
           <p className="text-sm text-muted-foreground flex items-center">
             <Sparkles className="h-4 w-4 mr-1 text-purple-400" />
-            © 2025 Sayvia✨. All rights reserved.
+            © 2025 <span className="font-semibold ml-1 text-purple-500">Sayvia✨</span>. All rights reserved.
           </p>
+
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            <Link href="/privacy-policy" className="hover:text-purple-500 transition-colors duration-200">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-and-conditions" className="hover:text-purple-500 transition-colors duration-200">
+              Terms & Conditions
+            </Link>
+            <Link href="/cancellation-refund-policy" className="hover:text-purple-500 transition-colors duration-200">
+              Cancellation & Refund Policy
+            </Link>
+            <Link href="/shipping-delivery-policy" className="hover:text-purple-500 transition-colors duration-200">
+              Shipping & Delivery Policy
+            </Link>
+            <Link href="/contact" className="hover:text-purple-500 transition-colors duration-200">
+              Contact Us
+            </Link>
+          </div>
         </div>
-      </footer>
+      </footer> */}
+      <Footer/>
     </div>
   );
 };

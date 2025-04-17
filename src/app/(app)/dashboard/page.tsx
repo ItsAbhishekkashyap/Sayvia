@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 import { Sparkles, Lock } from "lucide-react";
 import { useRouter } from 'next/navigation';
+import { Footer } from '@/components/Footer';
 
 
 export const dynamic = 'force-dynamic';
@@ -461,6 +462,9 @@ const Dashboard = () => {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Footer */}
+      <Footer/>
     </div>
   );
 };
