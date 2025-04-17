@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { Check, Crown, Palette, BarChart, MessageSquare, Shield, Link2, Ban } from "lucide-react";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Footer } from "@/components/Footer";
 // import { Footer } from "@/components/Footer";
 
 export default function UpgradePage() {
@@ -143,8 +144,9 @@ export default function UpgradePage() {
         Already premium? <a href="/dashboard/premium" className="text-amber-600 hover:underline">Go to your dashboard</a>
       </div>
 
-      {/* Footer */}
     </motion.div>
+      {/* Footer */}
+      <Footer/>
       
     </>
   );

@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs"
 import dbConnect from "@/lib/dbconnect";
-import UserModel from "@/model/user";
+import User from "@/model/user";
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -18,7 +18,7 @@ export const authOptions: NextAuthOptions = {
                 console.log("🔐 Authorize called with:", credentials);
                 await dbConnect()
                 try {
-                    const user = await UserModel.findOne({
+                    const user = await User.findOne({
                         $or: [
                             { email: credentials.identifier },
                             { username: credentials.identifier }
@@ -82,7 +82,7 @@ export const authOptions: NextAuthOptions = {
             console.log("🔥 SESSION CALLBACK STARTED");
           
             try {
-              const dbUser = await UserModel.findOne({ email: session.user.email });
+              const dbUser = await User.findOne({ email: session.user.email });
           
               if (!dbUser) {
                 console.error("❌ No user found in DB for session email:", session.user.email);
