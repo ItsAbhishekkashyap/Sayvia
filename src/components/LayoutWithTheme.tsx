@@ -4,6 +4,7 @@
 import React, { useEffect } from "react"
 import { useTheme } from "@/context/ThemeContext"
 import Navbar from "@/components/Navbar"
+import SupportButton from "@/components/SupportButton"
 
 const LayoutWithTheme = ({ children }: { children: React.ReactNode }) => {
   const { isDarkMode } = useTheme()
@@ -22,6 +23,7 @@ const LayoutWithTheme = ({ children }: { children: React.ReactNode }) => {
     <>
       <Navbar />
       {children}
+      <SupportButton/>
     </>
   )
 }

@@ -82,6 +82,49 @@ export function Footer() {
               © 2025 <span className="font-semibold text-purple-600 dark:text-purple-400">Sayvia</span>.
               All rights reserved.
             </span>
+            <Link
+              href="/support"
+              className="relative overflow-hidden group"
+            >
+              <motion.span
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center gap-2 bg-gradient-to-r ml-2 from-purple-500 to-pink-500 text-white font-medium px-2 py-1.5 rounded-full shadow-lg group-hover:shadow-xl transition-all duration-300"
+              >
+                {/* Animated coffee cup */}
+                <motion.span
+                  animate={{
+                    rotate: [0, 5, -5, 0],
+                    y: [0, -2, 0]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="text-lg"
+                >
+                  🌟
+                </motion.span>
+                <span>Support Our Work</span>
+
+                {/* Glow effect */}
+                <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full -z-10"></span>
+              </motion.span>
+
+              {/* Subtle pulse animation */}
+              <motion.span
+                className="absolute inset-0 border-2 border-yellow-400 rounded-full opacity-0 group-hover:opacity-100"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0, 0.5, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity
+                }}
+              />
+            </Link>
           </div>
 
           <div className="flex items-center">

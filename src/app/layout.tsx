@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import LayoutWithTheme from "@/components/LayoutWithTheme";
 
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <AuthProvider>
               <LayoutWithTheme>
                 {children}
+                
               </LayoutWithTheme>
               <Toaster />
             </AuthProvider>
