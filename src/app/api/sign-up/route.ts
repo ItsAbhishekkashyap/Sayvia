@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/model/user";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { signOut } from "next-auth/react";
 
 export async function POST(request: Request) {
   // Connect to the database
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    signOut({ callbackUrl: "/signin" }); // very important
 
     // 2. Handle unverified username
     const existingUserByUsername = await UserModel.findOne({ username });

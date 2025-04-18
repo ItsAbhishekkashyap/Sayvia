@@ -12,6 +12,9 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   const url = request.nextUrl;
 
+  console.log("Token:", token);
+
+
   const isAuthPage = pathname.startsWith('/sign-in') ||
                      pathname.startsWith('/sign-up') ||
                      pathname.startsWith('/verify');
@@ -31,6 +34,12 @@ export async function middleware(request: NextRequest) {
   // ✅ 3. If user is logged in but NOT verified — allow access only to /verify
   if (token && !token.isVerified && !pathname.startsWith('/verify')) {
     return NextResponse.redirect(new URL(`/verify/${token.username}`, request.url));
+  }
+  console.log("Middleware token:", token);
+console.log("Path:", pathname);
+
+  if (!token && isAuthPage) {
+    return NextResponse.next(); // Let them sign in again
   }
 
   return NextResponse.next();

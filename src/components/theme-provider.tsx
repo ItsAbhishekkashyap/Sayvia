@@ -2,10 +2,12 @@
 "use client"
 
 import * as React from "react"
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
+import { ThemeProvider as NextThemesProvider } from "next-themes"
 import type { ThemeProviderProps } from "next-themes"
 import { useSession } from "next-auth/react"
 import { useEffect } from "react"
+import { useTheme } from "next-themes"
+
 
 export type Theme = "light" | "dark" | "system"
 export type ColorTheme = "default" | "ocean" | "forest" | "sunset" | "lavender" | "monochrome"

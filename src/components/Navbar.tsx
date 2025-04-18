@@ -69,7 +69,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link href="/sign-up">
-                  <Button className="bg-purple-600 hover:bg-purple-700">
+                  <Button  className="bg-purple-600 hover:bg-purple-700">
                     Sign Up
                   </Button>
                 </Link>
@@ -141,7 +141,9 @@ const Navbar = () => {
                   </span>
                 </div>
                 <Button
-                  onClick={() => signOut()}
+                  onClick={async () => {
+                    await signOut({ redirect: true, callbackUrl: '/sign-in' });
+                  }}
                   className="w-full justify-start"
                   variant="ghost"
                 >
