@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbconnect";
-import UserModel from "@/model/user";
+import User from "@/model/user";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
 import { signOut } from "next-auth/react";
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     const { username, email, password } = await request.json();
 
     // 1. Check if the username is already taken and verified
-    const existingUserVerifiedByUsername = await UserModel.findOne({
+    const existingUserVerifiedByUsername = await User.findOne({
       username,
       isVerified: true,
     });
@@ -26,10 +26,10 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    signOut({ callbackUrl: "/signin" }); // very important
+    
 
     // 2. Handle unverified username
-    const existingUserByUsername = await UserModel.findOne({ username });
+    const existingUserByUsername = await User.findOne({ username });
     let verifyCode: string;
 
     if (existingUserByUsername && !existingUserByUsername.isVerified) {
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
     }
 
     // 3. Check if the user exists by email
-    const existingUserByEmail = await UserModel.findOne({ email });
+    const existingUserByEmail = await User.findOne({ email });
 
     if (existingUserByEmail) {
       // If user already exists but is not verified
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1); // Set expiration for the verification code
 
-      const newUser = new UserModel({
+      const newUser = new User({
         username,
         email,
         password: hashedPassword,

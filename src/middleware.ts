@@ -38,9 +38,7 @@ export async function middleware(request: NextRequest) {
   console.log("Middleware token:", token);
 console.log("Path:", pathname);
 
-  if (!token && isAuthPage) {
-    return NextResponse.next(); // Let them sign in again
-  }
+
 
   return NextResponse.next();
 }
