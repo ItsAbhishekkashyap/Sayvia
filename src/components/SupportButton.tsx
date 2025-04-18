@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 export default function SupportButton() {
     const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const clickTimeout = useRef(null); // Removed TypeScript type annotation
+  const clickTimeout = useRef<ReturnType<typeof setTimeout> | null>(null); // Removed TypeScript type annotation
   const router = useRouter();
 
   useEffect(() => {
@@ -25,32 +25,31 @@ export default function SupportButton() {
 
   const handleClick = () => {
     if (!isMobile) {
-      router.push('/support');
+      // On desktop, just redirect immediately
+      router.push("/support");
       return;
     }
-
-    // Handle double click detection
+  
     if (clickTimeout.current) {
-      // Double click detected
+      // Second tap within timeout – close and redirect
       clearTimeout(clickTimeout.current);
       clickTimeout.current = null;
-      setIsExpanded(false);
+      setIsExpanded(false); // shrink button
       router.push("/support");
     } else {
-      // First click - expand and set timeout
+      // First tap – expand button and wait for second tap
       setIsExpanded(true);
       clickTimeout.current = setTimeout(() => {
-        // Single click - redirect after delay if still expanded
+        // Auto redirect if user didn't tap again
         if (isExpanded) {
-          setIsExpanded(false);
-          router.push('/support');
+          setIsExpanded(false); // optional: shrink before redirect
+          router.push("/support");
         }
         clickTimeout.current = null;
-      }, 1500); // 300ms delay to detect double click
-      
-      
+      }, 1500); // adjust delay as needed
     }
   };
+  
 
   // Clean up timeout on unmount
   useEffect(() => {
@@ -71,7 +70,7 @@ export default function SupportButton() {
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-[9999] rounded-full bg-gradient-to-br from-yellow-400 to-amber-400 hover:from-yellow-500 hover:to-amber-500 text-gray-900 px-4 py-3 shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-2 border border-yellow-300/30"
+      className="fixed bottom-6 right-6 z-[9999] rounded-full bg-gradient-to-br from-yellow-400 to-amber-100 hover:from-yellow-400 hover:to-amber-200 text-gray-900 px-4 py-3 shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-2 border border-yellow-300/30"
     >
       <motion.div
         animate={{
@@ -101,3 +100,8 @@ export default function SupportButton() {
     </motion.div>
   );
 }
+
+
+
+
+

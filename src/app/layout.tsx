@@ -32,7 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {children}
                 
               </LayoutWithTheme>
-              <SupportButton/>
+              <SupportButton />
+              {/* <div className="fixed bottom-4 right-4 bg-yellow-500 rounded-full text-white p-4">support</div> */}
               <Toaster />
             </AuthProvider>
           </ThemeProvider>
