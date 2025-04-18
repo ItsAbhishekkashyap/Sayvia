@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, MessageCircle, Sparkles, Shield, Link as LinkIcon } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { Footer } from "@/components/Footer"
 
 const HowItWorksPage = () => {
   const steps = [
@@ -30,6 +31,7 @@ const HowItWorksPage = () => {
   ]
 
   return (
+    <>
     <div className="container mx-auto mt-4 px-4 py-12 md:py-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -85,6 +87,8 @@ const HowItWorksPage = () => {
         </Button>
       </motion.div>
     </div>
+    <Footer/>
+    </>
   )
 }
 

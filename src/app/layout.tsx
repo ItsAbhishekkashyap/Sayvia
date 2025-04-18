@@ -6,6 +6,8 @@ import AuthProvider from "@/context/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/context/ThemeContext";
 import LayoutWithTheme from "@/components/LayoutWithTheme";
+import SupportButton from "@/components/SupportButton";
+import { MessageCircleHeart} from "lucide-react";
 
 
 
@@ -22,14 +24,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-      <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
+      <html  lang="en" suppressHydrationWarning>
+        <body  className={inter.className}>
           <ThemeProvider>
             <AuthProvider>
               <LayoutWithTheme>
                 {children}
                 
               </LayoutWithTheme>
+              <SupportButton/>
               <Toaster />
             </AuthProvider>
           </ThemeProvider>

@@ -155,14 +155,14 @@ const SupportUsCard: React.FC = () => {
                                     whileTap={{ scale: 0.97 }}
                                     onClick={() => handleCoffeeClick(tier.amount)}
                                     className={`p-3 rounded-xl border-2 transition-all ${selectedAmount === tier.amount
-                                        ? 'border-yellow-400 bg-yellow-50 shadow-md'
-                                        : 'border-gray-200 hover:border-yellow-300 bg-background'
+                                            ? 'border-yellow-400 bg-yellow-50 shadow-md'
+                                            : 'border-gray-200 hover:border-yellow-300 bg-background'
                                         }`}
                                 >
                                     <div className="flex flex-col items-center gap-1">
                                         <div className={`p-2 rounded-full ${selectedAmount === tier.amount
-                                            ? 'bg-yellow-100 text-yellow-600'
-                                            : 'bg-gray-50 text-foreground/80'
+                                                ? 'bg-yellow-100 text-yellow-600'
+                                                : 'bg-gray-50 text-foreground/80'
                                             }`}>
                                             {tier.icon}
                                         </div>
@@ -171,6 +171,24 @@ const SupportUsCard: React.FC = () => {
                                     </div>
                                 </motion.button>
                             ))}
+
+                            {/* Custom Support Button */}
+                            <motion.a
+                                href="https://www.buymeacoffee.com/abhishek"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                whileHover={{ y: -4, scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                className="p-3 rounded-xl border-2 border-gray-200 hover:border-yellow-300 bg-background transition-all flex flex-col items-center gap-1"
+                            >
+                                <div className="p-2 rounded-full bg-gray-50 text-foreground/80">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+                                    </svg>
+                                </div>
+                                <span className="font-semibold text-foreground">Custom</span>
+                                <span className="text-xs text-foreground/60">Any Amount</span>
+                            </motion.a>
                         </div>
 
                         {/* Thank you message with animation */}

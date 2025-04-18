@@ -23,7 +23,7 @@ const LayoutWithTheme = ({ children }: { children: React.ReactNode }) => {
     <>
       <Navbar />
       {children}
-      <SupportButton/>
+      
     </>
   )
 }
