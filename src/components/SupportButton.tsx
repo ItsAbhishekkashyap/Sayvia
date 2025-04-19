@@ -70,7 +70,7 @@ export default function SupportButton() {
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-[9999] rounded-full bg-gradient-to-br from-yellow-400 to-amber-100 hover:from-yellow-400 hover:to-amber-200 text-gray-900 px-4 py-3 shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-2 border border-yellow-300/30"
+      className="fixed bottom-6 right-6 z-[9999] rounded-full bg-gradient-to-br from-violet-400 to-pink-200 hover:from-violet-400 hover:to-pink-300 text-gray-900 px-4 py-3 shadow-xl transition-all duration-300 cursor-pointer flex items-center gap-2 border border-yellow-300/30"
     >
       <motion.div
         animate={{
