@@ -18,8 +18,10 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Sparkles, Lock } from "lucide-react";
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { Footer } from '@/components/Footer';
+import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { getServerSession } from 'next-auth';
 
 
 export const dynamic = 'force-dynamic';
@@ -40,6 +42,8 @@ const Dashboard = () => {
 
   const { toast } = useToast();
   const { data: session } = useSession();
+
+  
 
 
   const form = useForm({

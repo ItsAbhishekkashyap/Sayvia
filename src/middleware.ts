@@ -9,7 +9,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+    secureCookie: process.env.NODE_ENV === "production", // Add this line
+  });
+
+  console.log("Cookies:", request.cookies.getAll());
+
   const url = request.nextUrl;
 
   console.log("Token:", token);

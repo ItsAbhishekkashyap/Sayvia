@@ -78,7 +78,7 @@ export default function MessagePage() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="max-w-2xl mx-auto bg-background text-foreground mt-28 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-lg"
+      className="max-w-2xl mx-auto bg-background text-foreground mb-10 mt-28 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-lg"
     >
       <div className="text-center mb-8">
         <motion.h1 
