@@ -37,7 +37,7 @@ export const metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://sayvia.in',
+    canonical: 'https://sayvia.xyz',
   },
   twitter: {
     card: 'summary_large_image',

@@ -23,7 +23,7 @@ export const metadata = {
   openGraph: {
     title: 'Sayvia',
     description: 'Anonymous message platform.',
-    url: 'https://sayvia.in',
+    url: 'https://sayvia.xyz',
     siteName: 'Sayvia',
     icons: {
           icon: "/chat.svg", 
@@ -39,13 +39,13 @@ export const metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: 'https://sayvia.in',
+    canonical: 'https://sayvia.xyz',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Sayvia',
     description: 'Send anonymous messages securely.',
-    images: ['https://sayvia.in/og-image.png'],
+    images: ['sayviaimg.png'],
   },
 };
 
