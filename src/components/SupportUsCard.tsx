@@ -174,7 +174,7 @@ const SupportUsCard: React.FC = () => {
 
                             {/* Custom Support Button */}
                             <motion.a
-                                href="https://www.buymeacoffee.com/abhishek"
+                                href="https://www.buymeacoffee.com/sayvia"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ y: -4, scale: 1.03 }}
