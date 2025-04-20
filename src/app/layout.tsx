@@ -16,7 +16,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
-  description: "Sayvia is a secure and easy-to-use platform where you can send and receive anonymous messages. It's completely ad-free, ensuring a smooth, distraction-free experience. Whether you're looking for honest feedback, sharing a secret, or just having some fun, Sayvia lets you express yourself freely without revealing your identity. With a simple interface and no privacy compromises, Sayvia makes anonymous messaging safe, simple, and enjoyable for everyone.",
+  description: "Sayvia lets you send and receive anonymous messages easily. It’s secure, private, user-friendly, and completely ad-free—making sharing truly effortless.",
   keywords: ['anonymous messaging', 'Sayvia', 'send messages', 'chat anonymously'],
   openGraph: {
     title: 'Sayvia',
