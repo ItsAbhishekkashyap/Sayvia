@@ -1,3 +1,4 @@
+// src/app/(app)/dashboard/page.tsx
 'use client'
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -24,38 +25,38 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 
-export const metadata = {
-  title: "Your Dashboard | Sayvia",
-  description: "Manage your anonymous messages in your private Sayvia dashboard.",
-  openGraph: {
-    title: "Sayvia Dashboard",
-    description: "Secure, anonymous feedback—powered by Sayvia.",
-    url: "https://sayvia.xyz/dashboard",
-    siteName: "Sayvia",
-    images: [
-      {
-        url: "sayviaimg.png",
-        width: 1200,
-        height: 630,
-        alt: "Sayvia Dashboard Preview",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sayvia Dashboard",
-    description: "Manage your anonymous messages securely.",
-    images: ["sayviaimg.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    // you could disallow some user‑only pages:
-    // rules: { UserAgent: "*", Disallow: "/dashboard" }
-  },
-};
+//   export const metadata = {
+//   title: "Your Dashboard | Sayvia",
+//   description: "Manage your anonymous messages in your private Sayvia dashboard.",
+//   openGraph: {
+//     title: "Sayvia Dashboard",
+//     description: "Secure, anonymous feedback—powered by Sayvia.",
+//     url: "https://sayvia.xyz/dashboard",
+//     siteName: "Sayvia",
+//     images: [
+//       {
+//         url: "sayviaimg.png",
+//         width: 1200,
+//         height: 630,
+//         alt: "Sayvia Dashboard Preview",
+//       },
+//     ],
+//     locale: "en_US",
+//     type: "website",
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: "Sayvia Dashboard",
+//     description: "Manage your anonymous messages securely.",
+//     images: ["sayviaimg.png"],
+//   },
+//   robots: {
+//     index: true,
+//     follow: true,
+//     // you could disallow some user‑only pages:
+//     // rules: { UserAgent: "*", Disallow: "/dashboard" }
+//   },
+// };
 
 
 
@@ -534,3 +535,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

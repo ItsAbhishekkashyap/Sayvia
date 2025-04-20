@@ -4,31 +4,31 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, Zap, MessageSquare, Heart, BarChart2, Smartphone, Shield, Sparkles, ChevronRight } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
-export const metadata = {
-    title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
-    description: 'Send and receive anonymous messages with Sayvia. Completely secure, user-friendly, and ad-free.',
-    keywords: ['anonymous messaging', 'Sayvia', 'send messages', 'chat anonymously', 'how it works', 'how sayvia work','how sayvia is different from other','sayvia vs quora','sayvia vs google form'],
-    openGraph: {
-      title: 'Sayvia',
-      description: 'Anonymous message platform.',
-      url: 'https://sayvia.in',
-      siteName: 'Sayvia',
-      images: [
-        {
-          url: 'sayviaimg.png',
-          width: 1200,
-          height: 630,
-        },
-      ],
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: 'Sayvia',
-      description: 'Send anonymous messages securely.',
-      images: ['sayviaimg.png'],
-    },
-  };
+// export const metadata = {
+//     title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
+//     description: 'Send and receive anonymous messages with Sayvia. Completely secure, user-friendly, and ad-free.',
+//     keywords: ['anonymous messaging', 'Sayvia', 'send messages', 'chat anonymously', 'how it works', 'how sayvia work','how sayvia is different from other','sayvia vs quora','sayvia vs google form'],
+//     openGraph: {
+//       title: 'Sayvia',
+//       description: 'Anonymous message platform.',
+//       url: 'https://sayvia.in',
+//       siteName: 'Sayvia',
+//       images: [
+//         {
+//           url: 'sayviaimg.png',
+//           width: 1200,
+//           height: 630,
+//         },
+//       ],
+//       type: 'website',
+//     },
+//     twitter: {
+//       card: 'summary_large_image',
+//       title: 'Sayvia',
+//       description: 'Send anonymous messages securely.',
+//       images: ['sayviaimg.png'],
+//     },
+//   };
 
 // Animated counter component
 const Counter = ({ value, duration = 2 }: { value: number; duration?: number }) => {
