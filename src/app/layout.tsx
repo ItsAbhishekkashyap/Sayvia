@@ -26,7 +26,7 @@ export const metadata = {
     url: 'https://sayvia.xyz',
     siteName: 'Sayvia',
     icons: {
-      icon: "/phone.svg",
+      icon: "/chat.svg",
 
     },
     images: [
