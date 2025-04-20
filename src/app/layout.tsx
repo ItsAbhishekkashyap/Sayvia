@@ -15,6 +15,8 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+
+
   title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
   description: "Sayvia lets you send and receive anonymous messages easily. It’s secure, private, user-friendly, and completely ad-free—making sharing truly effortless.",
   keywords: ['anonymous messaging', 'Sayvia', 'send messages', 'chat anonymously'],
@@ -51,6 +53,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+
+        <meta name="description" content="Send and receive anonymous messages with Sayvia. 100% private, secure, and ad-free. Join the anonymous revolution today." />
+        <meta property="og:title" content="Sayvia – Anonymous Messaging" />
+        <meta property="og:description" content="Completely private, ad-free platform to send and receive anonymous messages. No ads. Just pure connection." />
+        <meta property="og:url" content="https://sayvia.xyz/" />
+        <meta property="og:image" content="sayviaimg.png" />
+
         {/* Organization JSON-LD */}
         <Script
           type="application/ld+json"

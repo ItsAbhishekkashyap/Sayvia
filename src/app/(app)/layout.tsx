@@ -26,9 +26,9 @@ export const metadata = {
     url: 'https://sayvia.xyz',
     siteName: 'Sayvia',
     icons: {
-          icon: "/chat.svg", 
-      
-        },
+      icon: "/chat.svg",
+
+    },
     images: [
       {
         url: 'sayviaimg.png',
@@ -60,6 +60,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="description" content="Send and receive anonymous messages with Sayvia. 100% private, secure, and ad-free. Join the anonymous revolution today." />
+        <meta property="og:title" content="Sayvia – Anonymous Messaging" />
+        <meta property="og:description" content="Completely private, ad-free platform to send and receive anonymous messages. No ads. Just pure connection." />
+        <meta property="og:url" content="https://sayvia.xyz/" />
+        <meta property="og:image" content="sayviaimg.png" />
+
+      </head>
       <body className={inter.className}>
         <ThemeProvider>
           <ClientLayoutWithTheme>{children}</ClientLayoutWithTheme>
