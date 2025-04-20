@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://sayvia.xyz
+
+# Sitemaps
+Sitemap: https://sayvia.xyz/sitemap.xml

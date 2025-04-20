@@ -4,6 +4,34 @@ import { ArrowRight, MessageCircle, Sparkles, Shield, Link as LinkIcon } from "l
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Footer } from "@/components/Footer"
+import Head from "next/head";
+
+export const metadata = {
+  title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
+  description: 'Send and receive anonymous messages with Sayvia. Completely secure, user-friendly, and ad-free.',
+  keywords: ['anonymous messaging', 'Sayvia', 'send messages', 'chat anonymously', 'how it works', 'how sayvia work'],
+  openGraph: {
+    title: 'Sayvia',
+    description: 'Anonymous message platform.',
+    url: 'https://sayvia.in',
+    siteName: 'Sayvia',
+    images: [
+      {
+        url: 'sayviaimg.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sayvia',
+    description: 'Send anonymous messages securely.',
+    images: ['sayviaimg.png'],
+  },
+};
+
 
 const HowItWorksPage = () => {
   const steps = [
@@ -32,6 +60,9 @@ const HowItWorksPage = () => {
 
   return (
     <>
+    <Head>
+        <link rel="canonical" href="https://sayvia.xyz/how-it-works" />
+      </Head>
     <div className="container mx-auto mt-4 px-4 py-12 md:py-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
