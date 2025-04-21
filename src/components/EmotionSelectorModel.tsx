@@ -53,198 +53,13 @@ const MoodDialog = ({ open, onOpenChange, selectedMood, setSelectedMood, onSubmi
   }, []);
 
 
-  const effects: Record<MoodType, MoodEffect> = {
-    happy: { type: 'confetti', emoji: '🎉' },
-    sad: { type: 'rain', emoji: '☔️' },
-    angry: { type: 'fireworks', emoji: '🎆' },
-    excited: { type: 'hearts', emoji: '💖' }
-  };
-
   const handleMoodSubmit = () => {
     if (!selectedMood) return;
 
-    setEffect(effects[selectedMood]); // No more error!
+    // setEffect(effects[selectedMood]); // No more error!
     setTimeout(() => setEffect(null), 3000);
     setMoodModalOpen(false);
   };
-
-  const renderEffect = () => {
-    if (!effect) return null;
-  
-    return (
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <AnimatePresence>
-          {effect.type === 'confetti' && (
-            <>
-              <Confetti
-                width={windowSize.width}
-                height={windowSize.height}
-                recycle={false}
-                numberOfPieces={800}
-                gravity={0.15}
-                colors={['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b']}
-                confettiSource={{
-                  x: windowSize.width / 2,
-                  y: windowSize.height,
-                  w: 0,
-                  h: 0
-                }}
-                initialVelocityY={-15}
-                tweenDuration={10000}
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-gradient-to-t from-transparent to-indigo-50/20 dark:to-indigo-900/10"
-              />
-            </>
-          )}
-  
-          {effect.type === 'rain' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-[url('/images/rain-bg.png')] bg-cover mix-blend-screen"
-            >
-              {[...Array(40)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ 
-                    y: -100, 
-                    x: Math.random() * windowSize.width,
-                    opacity: 0.7 + Math.random() * 0.3
-                  }}
-                  animate={{
-                    y: windowSize.height + 100,
-                    transition: {
-                      duration: 1.5 + Math.random() * 2,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }
-                  }}
-                  className="absolute text-4xl drop-shadow-lg"
-                  style={
-                    {
-                      filter: "drop-shadow(0 0 8px rgba(99, 102, 241, 0.5))",
-                      animationDelay: `${i * 0.1}s`,
-                    } as React.CSSProperties
-                  }
-                >
-                  {effect.emoji}
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-  
-          {effect.type === 'fireworks' && (
-            <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/10 to-transparent">
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{
-                    scale: 0,
-                    x: windowSize.width * (0.1 + i * 0.125),
-                    y: windowSize.height * 0.7
-                  }}
-                  animate={{
-                    scale: [0, 1.2, 0],
-                    opacity: [0, 1, 0],
-                    y: windowSize.height * 0.3,
-                    transition: {
-                      duration: 2.5,
-                      delay: i * 0.4,
-                      ease: [0.16, 1, 0.3, 1]
-                    }
-                  }}
-                  className="absolute origin-center"
-                >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ 
-                      scale: [0, 1],
-                      opacity: [1, 0],
-                      transition: {
-                        duration: 1.5,
-                        delay: 1,
-                        ease: "circOut"
-                      }
-                    }}
-                    className="text-6xl"
-                  >
-                    {effect.emoji}
-                  </motion.div>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ 
-                      scale: [0, 2],
-                      opacity: [0.7, 0],
-                      transition: {
-                        duration: 2,
-                        delay: 1.2
-                      }
-                    }}
-                    className="absolute inset-0 rounded-full border-2 border-indigo-400/50"
-                  />
-                </motion.div>
-              ))}
-            </div>
-          )}
-  
-          {effect.type === 'hearts' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-gradient-radial from-pink-500/10 to-transparent"
-            >
-              {[...Array(25)].map((_, i) => {
-                const size = 2 + Math.random() * 3;
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{
-                      scale: 0,
-                      x: windowSize.width / 2,
-                      y: windowSize.height / 2,
-                      rotate: Math.random() * 360
-                    }}
-                    animate={{
-                      scale: [0, size * 0.8, 0],
-                      x: [
-                        windowSize.width / 2,
-                        windowSize.width / 2 + (Math.random() - 0.5) * 500,
-                        windowSize.width / 2 + (Math.random() - 0.5) * 600
-                      ],
-                      y: [
-                        windowSize.height / 2,
-                        windowSize.height / 2 - 100 - Math.random() * 200,
-                        windowSize.height / 2 - 300 - Math.random() * 200
-                      ],
-                      opacity: [0, 1, 0],
-                      transition: {
-                        duration: 2.5,
-                        delay: i * 0.08,
-                        ease: "backOut"
-                      }
-                    }}
-                    className="absolute text-5xl"
-                    style={{
-                      filter: `drop-shadow(0 0 12px rgba(236, 72, 153, ${0.3 + Math.random() * 0.3}))`
-                    }as React.CSSProperties}
-                  >
-                    {effect.emoji}
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    );
-  };
-
 
   // Fix 1: Create a type-safe handler
   const handleMoodChange = (value: string) => {
@@ -258,9 +73,7 @@ const MoodDialog = ({ open, onOpenChange, selectedMood, setSelectedMood, onSubmi
 
   return (
     <>
-      <AnimatePresence>
-        {effect && renderEffect()}
-      </AnimatePresence>
+      
 
       <AlertDialog open={moodModalOpen} onOpenChange={setMoodModalOpen}>
         <AlertDialogContent className="max-w-md border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 p-6 rounded-xl shadow-2xl">

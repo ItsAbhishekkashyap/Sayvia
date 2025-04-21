@@ -61,6 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+      <link rel="icon" href="/chat.svg" />
         <meta name="description" content="Send and receive anonymous messages with Sayvia. 100% private, secure, and ad-free. Join the anonymous revolution today." />
         <meta property="og:title" content="Sayvia – Anonymous Messaging" />
         <meta property="og:description" content="Completely private, ad-free platform to send and receive anonymous messages. No ads. Just pure connection." />

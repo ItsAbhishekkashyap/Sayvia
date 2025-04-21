@@ -26,8 +26,6 @@ export interface IUser extends Document {
   isPremium: boolean;
   profileTheme?: 'default' | 'ocean' | 'sunset' | 'lavender' | 'monochrome';
   customLink?: string;
-  mood?: String,
-
 
   aiSuggestions?: boolean;
   messageModeration?: boolean;
