@@ -18,13 +18,22 @@ type MoodEffect = {
   emoji: string;
 } | null;
 
-type MoodType = 'happy' | 'sad' | 'angry' | 'excited';
+export type MoodType = 'happy' | 'sad' | 'angry' | 'excited';
+
+type MoodDialogProps = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  selectedMood: MoodType | null;
+  setSelectedMood: (mood: MoodType) => void;
+  onSubmit: (mood: MoodType) => void;
+};
 
 
 
-const MoodDialog = () => {
+
+const MoodDialog = ({ open, onOpenChange, selectedMood, setSelectedMood, onSubmit}: MoodDialogProps) => {
   const [moodModalOpen, setMoodModalOpen] = useState(true);
-  const [selectedMood, setSelectedMood] = useState<MoodType | ''>('');
+  // const [selectedMood, setSelectedMood] = useState<MoodType | ''>('');
   const [effect, setEffect] = useState<MoodEffect>(null);
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 0,
@@ -116,10 +125,12 @@ const MoodDialog = () => {
                     }
                   }}
                   className="absolute text-4xl drop-shadow-lg"
-                  style={{
-                    filter: "drop-shadow(0 0 8px rgba(99, 102, 241, 0.5))",
-                    animationDelay: `${i * 0.1}s`
-                  }}
+                  style={
+                    {
+                      filter: "drop-shadow(0 0 8px rgba(99, 102, 241, 0.5))",
+                      animationDelay: `${i * 0.1}s`,
+                    } as React.CSSProperties
+                  }
                 >
                   {effect.emoji}
                 </motion.div>
@@ -221,7 +232,7 @@ const MoodDialog = () => {
                     className="absolute text-5xl"
                     style={{
                       filter: `drop-shadow(0 0 12px rgba(236, 72, 153, ${0.3 + Math.random() * 0.3}))`
-                    }}
+                    }as React.CSSProperties}
                   >
                     {effect.emoji}
                   </motion.div>
@@ -241,7 +252,7 @@ const MoodDialog = () => {
     if (value === 'happy' || value === 'sad' || value === 'angry' || value === 'excited') {
       setSelectedMood(value);
     } else {
-      setSelectedMood('');
+      setSelectedMood('happy');
     }
   };
 
@@ -268,7 +279,7 @@ const MoodDialog = () => {
             </AlertDialogHeader>
 
             <RadioGroup
-              value={selectedMood}
+              value={selectedMood ?? ''}
               onValueChange={handleMoodChange}  // Now properly typed
               className="grid grid-cols-2 gap-4 py-4"
             >
@@ -309,7 +320,7 @@ const MoodDialog = () => {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setSelectedMood("");
+                  setSelectedMood("happy");
                   setMoodModalOpen(false);
                 }}
                 className="px-6"
