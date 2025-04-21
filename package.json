@@ -25,7 +25,7 @@
     "@react-email/components": "^0.0.22",
     "ai": "^3.0.13",
     "axios": "^1.7.4",
-    "bcryptjs": "^2.4.3",
+    "bcryptjs": "^3.0.2",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
