@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-
-export default nextConfig;
+const nextConfig = {
+    async redirects() {
+      return [
+        {
+          source: '/(.*)',
+          destination: 'https://sayvia.xyz/:path*',
+          permanent: true,
+        },
+      ];
+    },
+  };
+  
+  export default nextConfig;
+  
