@@ -62,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-      <Script
+        <Script
           type="application/ld+json"
           strategy="afterInteractive"
           id="organization-schema"  // Add a unique id
@@ -72,19 +72,23 @@ export default function RootLayout({
             "@type": "Organization",
             "name": "Sayvia",
             "url": "https://sayvia.xyz",
-            "logo": "chat.svg",
+            "logo": "https://sayvia.xyz/chat.svg",
             "sameAs": [
               "https://twitter.com/sayvia",
               "https://github.com/ItsAbhishekkashyap/Sayvia"
             ]
           })}
         </Script>
-      <link rel="icon" href="/chat.svg" />
-        <meta name="description" content="Send and receive anonymous messages with Sayvia. 100% private, secure, and ad-free. Join the anonymous revolution today." />
-        <meta property="og:title" content="Sayvia – Anonymous Messaging" />
-        <meta property="og:description" content="Completely private, ad-free platform to send and receive anonymous messages. No ads. Just pure connection." />
-        <meta property="og:url" content="https://sayvia.xyz/" />
-        <meta property="og:image" content="sayviaimg.png" />
+        <link rel="icon" href="/chat.svg" />
+        <meta property="og:title" content="Sayvia" />
+        <meta property="og:description" content="Send messages and give feedback without revealing your identity. Safe, simple, Sayvia." />
+        <meta property="og:image" content="https://sayvia.xyz/chat.svg" />
+        <meta property="og:url" content="https://sayvia.xyz" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Sayvia" />
+        <meta name="twitter:description" content="Send messages anonymously and safely with Sayvia." />
+        <meta name="twitter:image" content="https://sayvia.xyz/chat.svg" />
+
 
       </head>
       <body className={inter.className}>
