@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:image" content="sayviaimg.png" />
 
         {/* Organization JSON-LD */}
-        {/* <Script
+        <Script
           type="application/ld+json"
           strategy="afterInteractive"
           id="organization-schema"  // Add a unique id
@@ -71,28 +71,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             "@type": "Organization",
             "name": "Sayvia",
             "url": "https://sayvia.xyz",
-            "logo": "https://sayvia.xyz/logo.png",
+            "logo": "chat.svg",
             "sameAs": [
               "https://twitter.com/sayvia",
               "https://github.com/ItsAbhishekkashyap/Sayvia"
             ]
           })}
-        </Script> */}
+        </Script>
 
-        <Script type="application/ld+json" dangerouslySetInnerHTML={{
-          __html: `
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Sayvia",
-  "url": "https://sayvia.xyz",
-  "logo": "chat.svg",
-  "sameAs": [
-              "https://twitter.com/sayvia",
-              "https://github.com/ItsAbhishekkashyap/Sayvia"
-            ]
-}
-`}} />
+       
 
       </head>
       <body className={inter.className}>
