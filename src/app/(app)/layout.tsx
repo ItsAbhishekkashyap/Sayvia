@@ -52,6 +52,7 @@ export const metadata = {
 
 //  Create a Client Component to use the hook
 import ClientLayoutWithTheme from "@/components/ClientLayoutWithTheme"; // We'll make this next
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -61,6 +62,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+      <Script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: `
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Sayvia",
+  "url": "https://sayvia.xyz",
+  "logo": "chat.svg",
+  "sameAs": [
+              "https://twitter.com/sayvia",
+              "https://github.com/ItsAbhishekkashyap/Sayvia"
+            ]
+}
+`}} />
       <link rel="icon" href="/chat.svg" />
         <meta name="description" content="Send and receive anonymous messages with Sayvia. 100% private, secure, and ad-free. Join the anonymous revolution today." />
         <meta property="og:title" content="Sayvia – Anonymous Messaging" />
