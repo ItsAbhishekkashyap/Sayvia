@@ -18,11 +18,17 @@ export const metadata = {
 
 
   title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
-  description: "Sayvia lets you send and receive anonymous messages easily. It’s secure, private, user-friendly, and completely ad-free—making sharing truly effortless.",
-  keywords: ['anonymous messaging', 'Sayvia', 'send messages', 'chat anonymously'],
+  description: "Sayvia lets you send and receive anonymous messages and feedback easily. It’s secure, private, user-friendly, and completely ad-free—making sharing truly effortless.",
+  keywords: [
+    "anonymous message app",
+    "send anonymous messages",
+    "sayvia",
+    "secure feedback app",
+    "no login messaging"
+  ],
   openGraph: {
-    title: 'Sayvia',
-    description: 'Anonymous message platform.',
+    title: 'Sayvia - Anonymous Message and Feedback App | Share Honestly',
+    description: "Send and receive anonymous messages with Sayvia. Completely secure, user-friendly, and ad-free.",
     url: 'https://sayvia.xyz',
     siteName: 'Sayvia',
     icons: {
@@ -31,9 +37,10 @@ export const metadata = {
     },
     images: [
       {
-        url: 'sayviaimg.png',
+        url: "https://sayvia.xyz/chat.svg",
         width: 1200,
         height: 630,
+        alt: "Sayvia – Anonymous Message App"
       },
     ],
     type: 'website',
@@ -44,8 +51,8 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Sayvia',
-    description: 'Send anonymous messages securely.',
-    images: ['sayviaimg.png'],
+    description: "Send and receive anonymous messages with Sayvia. Completely secure, user-friendly, and ad-free.",
+    images: ["https://sayvia.xyz/chat.svg"],
   },
 };
 
@@ -60,14 +67,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Organization",
+            "@type": "WebSite",
             "name": "Sayvia",
             "url": "https://sayvia.xyz",
+            "description": "Sayvia lets users send and receive anonymous messages. Completely secure and ad-free.",
             "logo": "https://sayvia.xyz/chat.svg",
             "sameAs": [
               "https://twitter.com/sayvia",
               "https://github.com/ItsAbhishekkashyap/Sayvia"
-            ]
+            ],
+            "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://sayvia.xyz/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
           })}
         </Script>
         <link rel="icon" href="/chat.svg" />
