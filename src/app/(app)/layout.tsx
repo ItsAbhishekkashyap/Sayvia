@@ -39,7 +39,7 @@ export const metadata = {
     },
     images: [
       {
-        url: "https://sayvia.xyz/chat.svg",
+        url: "chat.svg",
         width: 1200,
         height: 630,
         alt: "Sayvia – Anonymous Message App"
@@ -54,7 +54,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Sayvia',
     description: "Send and receive anonymous messages with Sayvia. Completely secure, user-friendly, and ad-free.",
-    images: ["https://sayvia.xyz/chat.svg"],
+    images: ["chat.svg"],
   },
 };
 
@@ -82,7 +82,7 @@ export default function RootLayout({
             "name": "Sayvia",
             "url": "https://sayvia.xyz",
             "description": "Sayvia lets users send and receive anonymous messages. Completely secure and ad-free.",
-            "logo": "https://sayvia.xyz/chat.svg",
+            "logo": "chat.svg",
             "sameAs": [
               "https://twitter.com/sayvia",
               "https://github.com/ItsAbhishekkashyap/Sayvia"
@@ -97,12 +97,12 @@ export default function RootLayout({
         <link rel="icon" href="/chat.svg" />
         <meta property="og:title" content="Sayvia" />
         <meta property="og:description" content="Send messages and give feedback without revealing your identity. Safe, simple, Sayvia." />
-        <meta property="og:image" content="https://sayvia.xyz/chat.svg" />
+        <meta property="og:image" content="chat.svg" />
         <meta property="og:url" content="https://sayvia.xyz" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="Sayvia" />
         <meta name="twitter:description" content="Send messages anonymously and safely with Sayvia." />
-        <meta name="twitter:image" content="https://sayvia.xyz/chat.svg" />
+        <meta name="twitter:image" content="chat.svg" />
 
 
       </head>
