@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation'
 import { signInSchema } from '@/schemas/signInSchema'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { Form } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,6 +18,7 @@ const SignInPage = () => {
   const { toast } = useToast()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const { data: session } = useSession(); // Get the current session
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -34,15 +35,34 @@ const SignInPage = () => {
         redirect: false,
         identifier: data.identifier,
         password: data.password,
+        callbackUrl: '/dashboard',
         
       })
-      if (result?.ok) {
-        router.push(result.url || '/dashboard'); // ✅ Explicit redirect
+      // if (result?.ok) {
+      //   router.push(result.url || '/dashboard'); // ✅ Explicit redirect
+      // }
+
+      if (result?.ok){
+        toast({ title: "Welcome back!", description: "You've successfully signed in." });
+        router.replace('/dashboard');
       }
 
       if (result?.error) {
+        // Optional: Clear auth cookies manually (browser-level)
+        document.cookie = "next-auth.session-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         throw new Error(result.error)
       }
+
+      if (!session) {
+        return {
+          redirect: {
+            destination: '/sign-in',
+            permanent: false
+          }
+        }
+      }
+      
+      
 
       if (result?.url) {
         router.replace('/dashboard')
