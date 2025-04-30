@@ -130,40 +130,50 @@ export default function UpgradePage() {
         ))}
       </div>
 
-      <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-8 border border-amber-200">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-amber-900 mb-2">
-            Premium Membership
-          </h2>
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <span className="text-4xl font-bold text-amber-600">$9</span>
-            <span className=" dark:text-black">/ month</span>
-          </div>
-          <ul className="space-y-2 mb-8 text-left max-w-md mx-auto">
-            <li className="flex dark:text-black items-center gap-2">
-              <Check className="w-5 h-5 text-amber-600" />
-              <span>All premium features included</span>
-            </li>
-            <li className="flex dark:text-black items-center gap-2">
-              <Check className="w-5 h-5 text-amber-600" />
-              <span>Cancel anytime</span>
-            </li>
-            <li className="flex dark:text-black items-center gap-2">
-              <Check className="w-5 h-5 text-amber-600" />
-              <span>7-day money back guarantee</span>
-            </li>
-          </ul>
-          <Button
-            onClick={handleUpgrade}
-            className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg px-8 py-6 text-lg font-semibold"
-          >
-            Upgrade to Premium
-          </Button>
-          <p className="mt-3 text-sm text-gray-500">
-            Secured with Stripe • No hidden fees
-          </p>
-        </div>
-      </div>
+      <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-3xl p-10 border border-amber-300 shadow-xl">
+  <div className="max-w-2xl mx-auto text-center">
+    <span className="inline-block bg-amber-100 text-amber-700 text-xs font-semibold px-4 py-1 rounded-full uppercase mb-4 tracking-wide shadow-sm">
+      Limited Time Offer
+    </span>
+    <h2 className="text-3xl md:text-4xl font-extrabold text-amber-900 mb-3">
+      Enjoy Premium, On Us! 🎁
+    </h2>
+    <p className="text-lg text-amber-800 mb-6">
+      Unlock all premium features <strong>100% free</strong> during our early access period. No commitments. Just pure value.
+    </p>
+
+    <ul className="space-y-3 mb-8 text-left max-w-md mx-auto text-amber-900 font-medium">
+      <li className="flex items-start gap-3">
+        <Check className="w-5 h-5 text-amber-600 mt-1" />
+        <span>Full access to premium tools and insights</span>
+      </li>
+      <li className="flex items-start gap-3">
+        <Check className="w-5 h-5 text-amber-600 mt-1" />
+        <span>No credit card or payment required</span>
+      </li>
+      <li className="flex items-start gap-3">
+        <Check className="w-5 h-5 text-amber-600 mt-1" />
+        <span>Be among the first to shape the future features</span>
+      </li>
+      <li className="flex items-start gap-3">
+        <Check className="w-5 h-5 text-amber-600 mt-1" />
+        <span>Priority support & community badge</span>
+      </li>
+    </ul>
+
+    <Button
+      onClick={handleUpgrade}
+      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg px-8 py-6 text-lg font-semibold rounded-xl"
+    >
+      🔓 Unlock Premium for Free
+    </Button>
+
+    <p className="mt-4 text-sm text-gray-500">
+      {/* Offer valid until <strong>June 30, 2025</strong> • Early adopters get lifetime perks! */}
+    </p>
+  </div>
+</div>
+
 
       <div className="mt-8 text-center text-sm text-gray-500">
         Already premium? <a href="/dashboard/premium" className="text-amber-600 hover:underline">Go to your dashboard</a>
