@@ -59,7 +59,7 @@ const Home = () => {
                 height: `${10 + Math.random() * 30}px`,
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
-              }}
+              }as React.CSSProperties}
             />
           ))}
         </div>
@@ -233,7 +233,7 @@ const Home = () => {
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
                 filter: 'blur(40px)'
-              }}
+              }as React.CSSProperties}
             />
           ))}
         </div>
