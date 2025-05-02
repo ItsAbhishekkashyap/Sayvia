@@ -4,7 +4,8 @@ import { getServerSession } from 'next-auth';
 import User from '@/model/user';
 import dbconnect from '@/lib/dbconnect';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { sendMessageSchema } from '@/schemas/sendMessageSchema';
+
+import { customLinkSchema } from '@/schemas/customLinkSchema';
 
 export async function POST(req: Request) {
   await dbconnect();
@@ -13,7 +14,7 @@ export async function POST(req: Request) {
 
   // 3. Validate request payload
   const body = await req.json();
-  const parse = sendMessageSchema.safeParse(body);
+  const parse = customLinkSchema.safeParse(body);
   if (!parse.success) {
     const errorMessage = parse.error.errors[0].message;
     return NextResponse.json({ error: errorMessage }, { status: 400 });

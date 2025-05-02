@@ -143,7 +143,8 @@ const Dashboard = () => {
   };
 
   const copyProfileUrl = () => {
-    const url = `${window.location.origin}/u/${customLink ||session?.user?.username}`;
+    const url = session?.user?.customLink
+    ? `${window.location.origin}/u/${session.user.customLink}` : `${window.location.origin}/u/${session?.user?.username}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
     toast({ title: 'Copied!', description: 'Profile link copied to clipboard' });
@@ -325,7 +326,8 @@ const Dashboard = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="flex-1 p-3 rounded-lg bg-background border border-border truncate">
-              {`${window.location.origin}/u/${customLink || session?.user.username}`}
+              {session?.user?.customLink
+              ? `${window.location.origin}/u/${session.user.customLink}` : `${window.location.origin}/u/${session?.user.username}`}
             </div>
             <Button 
               onClick={copyProfileUrl}

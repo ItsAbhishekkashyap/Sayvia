@@ -89,7 +89,8 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
     }, []);
 
     const copyLink = () => {
-        const link = `${origin}/u/${session?.user?.customLink || session?.user?.username}`;
+        const link = session?.user?.customLink
+        ? `${origin}/u/${session.user.customLink}` : `${origin}/u/${ session?.user?.username}`;
         navigator.clipboard.writeText(link);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
@@ -157,28 +158,36 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
 
 
     const handleSaveLink = async () => {
-        if (!customLink) {
-            return toast({ title: "Error", description: "Custom link can not be empty" });
+        console.log("→ Saving customLink:", customLink);
+        if (!customLink || customLink.trim() === "") {
+            console.error("❌ Custom link is required")
+            return toast({ title: "Error", description: "Please enter a custom link" });
         }
 
         setIsSaving(true);
+        console.log("→ Saving customLink:", customLink);
 
-        const res = await fetch("/api/premium/custom-link", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ customLink }),
-        });
+        try {
+            const res = await fetch("/api/premium/custom-link", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ customLink }),
+            });
+            const data = await res.json();
+            console.log("← Response:", res.status, data);
+        
+            if (!res.ok) {
+                throw new Error(data.message || data.error || "Unknown error");
 
-        const data = await res.json();
-        console.log("Response data:", data); // Add this line
-
-        setIsSaving(false);
-
-        if (!res.ok) {
-            return toast({ title: "Error", description: "Something went wrong" });
-        }
-
-        toast({ title: "Success", description: "Custom link Saved!" });
+            }
+        
+            toast({ title: "Success", description: "Custom link Saved!" });
+          } catch (err: any) {
+            console.error("❌ Save failed:", err);
+            toast({ title: "Error", description: err.message });
+          } finally {
+            setIsSaving(false);
+          }
     };
 
 
