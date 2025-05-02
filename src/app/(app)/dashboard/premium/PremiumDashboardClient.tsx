@@ -7,7 +7,7 @@ import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check, Crown, Palette, Link2, Zap, Shield, Ban, BarChart } from "lucide-react";
 import { Bar } from 'react-chartjs-2';
@@ -25,7 +25,9 @@ import { useSession } from 'next-auth/react';
 import { useCustomLink } from '@/context/CustomLinkContext';
 import { Session } from "next-auth";
 
+import AnalyticsChart from '@/components/AnalyticsChart';
 import { CustomLinkProvider } from '@/context/CustomLinkContext';
+import SayviaAnalyticsChart from '@/components/SayviaAnalyticsChart';
 
 
 
@@ -49,11 +51,11 @@ const themes = [
 ];
 interface PremiumDashboardClientProps {
     session: Session;
-  }
+}
 
 export default function PremiumDashboardClient({ session }: PremiumDashboardClientProps) {
-    
-  
+
+
     // const { data: session } = useSession();
     const [theme, setTheme] = useState("Default");
 
@@ -65,10 +67,7 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
     const router = useRouter();
 
     const sessionData = useSession();
-    
-
-
-
+    const [isVisible, setIsVisible] = useState(true); // or false based on your logic
 
     const [origin, setOrigin] = useState("");
     const [copied, setCopied] = useState(false);
@@ -80,7 +79,9 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
     const isLoading = sessionData.status === "loading";
     const isAuthenticated = sessionData.status === "authenticated";
 
+    
 
+    
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -90,7 +91,7 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
 
     const copyLink = () => {
         const link = session?.user?.customLink
-        ? `${origin}/u/${session.user.customLink}` : `${origin}/u/${ session?.user?.username}`;
+            ? `${origin}/u/${session.user.customLink}` : `${origin}/u/${session?.user?.username}`;
         navigator.clipboard.writeText(link);
         setCopied(true);
         setTimeout(() => setCopied(false), 1500);
@@ -107,28 +108,8 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
             .catch(() => setIsPremium(false));
     }, [setCustomLink]);
 
-    const analyticsData = useMemo(() => {
-        const days = showFullReport
-            ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-        return {
-            labels: days,
-            datasets: [
-                {
-                    label: 'Feedback Received',
-                    data: days.map(() => Math.floor(Math.random() * (showFullReport ? 50 : 20)) + 5),
-                    backgroundColor: showFullReport
-                        ? 'rgba(124, 58, 237, 0.7)'
-                        : 'rgba(234, 179, 8, 0.7)',
-                    borderColor: showFullReport
-                        ? 'rgba(124, 58, 237, 1)'
-                        : 'rgba(234, 179, 8, 1)',
-                    borderWidth: 1,
-                },
-            ],
-        };
-    }, [showFullReport]);
+
 
     const handleUpgrade = async () => {
         const res = await fetch("/api/premium/upgrade", {
@@ -169,25 +150,25 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
 
         try {
             const res = await fetch("/api/premium/custom-link", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ customLink }),
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customLink }),
             });
             const data = await res.json();
             console.log("← Response:", res.status, data);
-        
+
             if (!res.ok) {
                 throw new Error(data.message || data.error || "Unknown error");
 
             }
-        
+
             toast({ title: "Success", description: "Custom link Saved!" });
-          } catch (err: any) {
+        } catch (err: any) {
             console.error("❌ Save failed:", err);
             toast({ title: "Error", description: err.message });
-          } finally {
+        } finally {
             setIsSaving(false);
-          }
+        }
     };
 
 
@@ -417,67 +398,22 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
                     </div>
 
                     {/* Right Column - Analytics Feature */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="h-[70vh]"
-                    >
-                        <Card className="border border-gray-200/70 hover:border-amber-200 transition-all h-full">
-                            <CardHeader className="flex flex-row items-center space-x-3 space-y-0">
-                                <div className="p-2 rounded-lg bg-amber-100 text-amber-600">
-                                    <BarChart className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold">Message Analytics</h3>
-                                    <p className="text-sm text-gray-500">Your feedback trends and insights</p>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="h-[300px]">
-                                <Bar
-                                    data={analyticsData}
-                                    options={{
-                                        responsive: true,
-                                        maintainAspectRatio: false,
-                                        plugins: {
-                                            legend: {
-                                                position: 'top',
-                                            },
-                                            tooltip: {
-                                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                                titleColor: '#fff',
-                                                bodyColor: '#fff',
-                                            },
-                                        },
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true,
-                                                grid: {
-                                                    color: 'rgba(0, 0, 0, 0.05)',
-                                                },
-                                            },
-                                            x: {
-                                                grid: {
-                                                    display: false,
-                                                },
-                                            },
-                                        },
-                                    }}
-                                />
-                            </CardContent>
-                            <CardFooter className="flex justify-between items-center text-sm text-gray-500">
-                                <span>{showFullReport ? "Complete history" : "Last 7 days"}</span>
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="text-amber-600 hover:bg-amber-50"
-                                    onClick={handleViewReport}
-                                >
-                                    {showFullReport ? "Show Weekly View" : "View Full Report"}
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </motion.div>
+                    <AnimatePresence>
+                        {isVisible && (<motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ delay: 0.2 }}
+                            className="h-[70vh]"
+                        >
+                            <SayviaAnalyticsChart
+                                showFullReport={showFullReport}
+                                handleViewReport={handleViewReport}
+
+                            />
+                        </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </motion.div>
             {/* Footer */}
