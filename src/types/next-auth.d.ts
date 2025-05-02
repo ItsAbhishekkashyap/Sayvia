@@ -11,6 +11,7 @@ declare module 'next-auth' {
     resetToken?: string;          // Add if needed in User object
     resetTokenExpiry?: Date; 
     isPremium: boolean;
+    customLink?: string;
     messages?: any[];
          // Add if needed in User object
   }
@@ -26,6 +27,7 @@ declare module 'next-auth' {
       isVerified?: boolean;
       isAcceptingMessages?: boolean;
       isPremium: boolean;
+      customLink?: string;
       messages?: any[];
       // Add resetToken fields only if you need them in session
     } & DefaultSession['user']
@@ -37,6 +39,9 @@ declare module 'next-auth/jwt' {
     _id?: string;
     username?: string;
     isVerified?: boolean;
+    
+    customLink?: string;
+    messages?: any[];
     // Add resetToken fields only if you need them in JWT
   }
 }

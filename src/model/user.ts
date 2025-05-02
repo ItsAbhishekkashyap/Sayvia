@@ -25,7 +25,8 @@ export interface IUser extends Document {
   resetTokenExpiry?: Date;
   isPremium: boolean;
   profileTheme?: 'default' | 'ocean' | 'sunset' | 'lavender' | 'monochrome';
-  customLink?: string;
+  // customLink?: string;
+  customLink?: { type: String, unique: true, sparse: true };
 
   aiSuggestions?: boolean;
   messageModeration?: boolean;

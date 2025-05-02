@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { Check, Crown, Palette, BarChart, MessageSquare, Shield, Link2, Ban } from "lucide-react";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Footer } from "@/components/Footer";
+import { User } from "next-auth";
+import Link from "next/link";
 // import { Footer } from "@/components/Footer";
 
 // export const metadata = {
@@ -37,23 +39,44 @@ import { Footer } from "@/components/Footer";
 // };
 export default function UpgradePage() {
   const { data: session } = useSession();
+  const user: User = session?.user as User;
+  
 
   const handleUpgrade = async () => {
     const res = await fetch("/api/upgrade", { method: "POST" });
     const data = await res.json();
 
-    if (res.ok) {
-      toast({ 
-        title: "🎉 Welcome to Premium!",
-        description: "Your account has been upgraded successfully",
-      });
-    } else {
-      toast({ 
-        title: "Upgrade failed", 
-        description: data.message, 
-        variant: "destructive" 
-      });
+    {session? (user?.isPremium && (
+      res.ok ? (
+        toast({ 
+          title: "You are a premium User 😊 ",
+          description: "Your account has been already upgraded",
+        })
+      ) : (
+        toast({ 
+          title: "Upgrade failed", 
+          description: data.message, 
+          variant: "destructive" 
+        })
+      )
+    
+    ))
+     : (!user?.isPremium && (
+      res.ok ? (
+        toast({ 
+          title: "🎉 Welcome to Premium!",
+          description: "Your account has been upgraded successfully",
+        })
+       ) : ( 
+        toast({ 
+          title: "Upgrade failed", 
+          description: data.message, 
+          variant: "destructive" 
+        })
+       )
+     ))
     }
+    
   };
 
   const features = [
@@ -161,12 +184,33 @@ export default function UpgradePage() {
       </li>
     </ul>
 
-    <Button
+{session? (user?.isPremium && (
+  <Link href="/dashboard/premium">
+  <Button
+  onClick={handleUpgrade}
+  className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-600 px-8 py-6 text-lg font-bold text-white shadow-xl transition-all duration-300 ease-in-out hover:from-yellow-500 hover:to-amber-700 hover:scale-105"
+>
+  <span className="mr-2">See Your Power</span>
+  <span className="animate-bounce">💥</span>
+</Button>
+</Link>
+
+))
+ : (!user?.isPremium && (
+  <Button
       onClick={handleUpgrade}
       className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg px-8 py-6 text-lg font-semibold rounded-xl"
     >
       🔓 Unlock Premium for Free
     </Button>
+ ))
+}
+    {/* <Button
+      onClick={handleUpgrade}
+      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg px-8 py-6 text-lg font-semibold rounded-xl"
+    >
+      🔓 Unlock Premium for Free
+    </Button> */}
 
     <p className="mt-4 text-sm text-gray-500">
       {/* Offer valid until <strong>June 30, 2025</strong> • Early adopters get lifetime perks! */}

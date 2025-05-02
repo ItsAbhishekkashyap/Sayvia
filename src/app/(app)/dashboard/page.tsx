@@ -24,6 +24,7 @@ import { Footer } from '@/components/Footer';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
+import { useCustomLink } from '@/context/CustomLinkContext';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,6 +44,8 @@ const Dashboard = () => {
 
   const { toast } = useToast();
   const { data: session } = useSession();
+
+  const { customLink, setCustomLink } = useCustomLink();
 
   
 
@@ -140,7 +143,7 @@ const Dashboard = () => {
   };
 
   const copyProfileUrl = () => {
-    const url = `${window.location.origin}/u/${session?.user?.username}`;
+    const url = `${window.location.origin}/u/${customLink ||session?.user?.username}`;
     navigator.clipboard.writeText(url);
     setCopied(true);
     toast({ title: 'Copied!', description: 'Profile link copied to clipboard' });
@@ -322,7 +325,7 @@ const Dashboard = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="flex-1 p-3 rounded-lg bg-background border border-border truncate">
-              {`${window.location.origin}/u/${session?.user.username}`}
+              {`${window.location.origin}/u/${customLink || session?.user.username}`}
             </div>
             <Button 
               onClick={copyProfileUrl}

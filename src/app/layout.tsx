@@ -9,6 +9,7 @@ import LayoutWithTheme from "@/components/LayoutWithTheme";
 import SupportButton from "@/components/SupportButton";
 import { MessageCircleHeart } from "lucide-react";
 import Script from "next/script";
+// import { CustomLinkProvider } from "@/context/CustomLinkContext";
 
 
 
@@ -100,7 +101,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <AuthProvider>
             <LayoutWithTheme>
+              
               {children}
+              
 
             </LayoutWithTheme>
             <SupportButton />

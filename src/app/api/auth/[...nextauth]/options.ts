@@ -74,6 +74,7 @@ export const authOptions: NextAuthOptions = {
                 token.isVerified = user.isVerified;
                 token.isAcceptingMessages = user.isAcceptingMessages;
                 token.username = user.username
+                token.customLink = user.customLink;
             }
 
             return token
@@ -95,6 +96,7 @@ export const authOptions: NextAuthOptions = {
               session.user.isAcceptingMessages = dbUser.isAcceptingMessages;
               session.user.isPremium = dbUser.isPremium;
               session.user.messages = dbUser.messages || [];
+              session.user.customLink = dbUser.customLink || null;
           
               console.log("✅ Session hydrated:", session.user.username);
               return session;

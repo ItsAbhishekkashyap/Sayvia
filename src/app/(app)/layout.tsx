@@ -62,6 +62,7 @@ export const metadata = {
 //  Create a Client Component to use the hook
 import ClientLayoutWithTheme from "@/components/ClientLayoutWithTheme"; // We'll make this next
 import Script from "next/script";
+import { CustomLinkProvider } from "@/context/CustomLinkContext";
 
 export default function RootLayout({
   children,
@@ -108,7 +109,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ThemeProvider>
+          <CustomLinkProvider>
           <ClientLayoutWithTheme>{children}</ClientLayoutWithTheme>
+          </CustomLinkProvider>
         </ThemeProvider>
       </body>
     </html>

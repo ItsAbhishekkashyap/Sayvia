@@ -4,19 +4,37 @@ import { getServerSession } from 'next-auth';
 import User from '@/model/user';
 import dbconnect from '@/lib/dbconnect';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
+import { sendMessageSchema } from '@/schemas/sendMessageSchema';
 
 export async function POST(req: Request) {
   await dbconnect();
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { customLink } = await req.json();
-  const regex = /^[a-zA-Z0-9_]+$/;
-  if (!regex.test(customLink)) return NextResponse.json({ error: 'Invalid characters' }, { status: 400 });
+  // 3. Validate request payload
+  const body = await req.json();
+  const parse = sendMessageSchema.safeParse(body);
+  if (!parse.success) {
+    const errorMessage = parse.error.errors[0].message;
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
+  }
+  const { customLink } = parse.data;
 
-  const exists = await User.findOne({ customLink });
-  if (exists) return NextResponse.json({ error: 'Link already in use' }, { status: 409 });
+  // 4. Ensure user is premium
+  const user = await User.findOne({ email: session.user.email });
+  if (!user?.isPremium) {
+    return NextResponse.json({ error: 'Upgrade to Premium to customize your link' }, { status: 403 });
+  }
 
+  // 5. Check link uniqueness
+  const existing = await User.findOne({ customLink });
+  if (existing) {
+    return NextResponse.json({ error: 'Link already in use' }, { status: 409 });
+  }
+
+  // 6. Save custom link
+  user.customLink = customLink;
+  await user.save();
   await User.findOneAndUpdate({ email: session.user.email }, { customLink });
   return NextResponse.json({ success: true });
 }

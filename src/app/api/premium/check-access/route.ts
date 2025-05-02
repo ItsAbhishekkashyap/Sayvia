@@ -20,6 +20,9 @@ export async function GET() {
   }
 
   const isPremium = user.isPremium || false;
+  const customLink = user.customLink || null;
 
-  return NextResponse.json({ success: true, isPremium });
+ 
+
+  return NextResponse.json({ success: true, isPremium, customLink });
 }
