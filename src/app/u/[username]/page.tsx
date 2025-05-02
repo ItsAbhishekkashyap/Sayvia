@@ -203,7 +203,7 @@ export default function MessagePage() {
                     onClick={() => setMessage(s)}
                     className="p-4 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-lg cursor-pointer transition-all border border-transparent hover:border-purple-300 dark:hover:border-purple-800"
                   >
-                    <p className="text-sm">"{s}"</p>
+                    <p className="text-sm">&quot;{s}&quot;</p>
                   </motion.div>
                 ))}
               </div>

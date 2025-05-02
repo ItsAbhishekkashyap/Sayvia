@@ -105,7 +105,7 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
                 setCustomLink(data.customLink);
             })
             .catch(() => setIsPremium(false));
-    }, []);
+    }, [setCustomLink]);
 
     const analyticsData = useMemo(() => {
         const days = showFullReport
