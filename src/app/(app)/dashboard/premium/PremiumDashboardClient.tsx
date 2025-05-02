@@ -23,6 +23,8 @@ import {
 import { Footer } from '@/components/Footer';
 import { useSession } from 'next-auth/react';
 import { useCustomLink } from '@/context/CustomLinkContext';
+import { Session } from "next-auth";
+
 import { CustomLinkProvider } from '@/context/CustomLinkContext';
 
 
@@ -45,11 +47,14 @@ const themes = [
     { name: "Lavender", color: "bg-gradient-to-r from-purple-400 to-pink-400" },
     { name: "Monochrome", color: "bg-gradient-to-r from-gray-300 to-gray-700" },
 ];
+interface PremiumDashboardClientProps {
+    session: Session;
+  }
 
-export default function PremiumDashboardClient() {
+export default function PremiumDashboardClient({ session }: PremiumDashboardClientProps) {
     
   
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
     const [theme, setTheme] = useState("Default");
 
     const [aiReply, setAiReply] = useState(true);
