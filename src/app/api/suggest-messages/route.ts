@@ -1,13 +1,10 @@
 import OpenAI from 'openai'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { NextResponse } from 'next/server'
 
-// Initialize OpenAI API
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-// Set edge runtime for best performance
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
@@ -31,8 +28,22 @@ Keep it curious, friendly, and inclusive.`
       ],
     })
 
-    const stream = OpenAIStream(response)
-    return new StreamingTextResponse(stream)
+    // Create a ReadableStream from the OpenAI response
+    const stream = new ReadableStream({
+      async start(controller) {
+        // Iterate through the chunks in the stream
+        for await (const chunk of response) {
+          const text = chunk.choices[0]?.delta?.content || ''  // Accessing the correct content
+          if (text) {
+            controller.enqueue(new TextEncoder().encode(text))  // Encoding each chunk of text
+          }
+        }
+        controller.close()
+      }
+    })
+
+    // Use native Response to return the stream as the response
+    return new Response(stream)
 
   } catch (error) {
     if (error instanceof OpenAI.APIError) {
@@ -44,4 +55,6 @@ Keep it curious, friendly, and inclusive.`
     }
   }
 }
+
+
 
