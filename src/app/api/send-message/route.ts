@@ -2,71 +2,11 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbconnect";
 import UserModel, { IMessage } from "@/model/user";
 import rawHindiBadWords from "@/lib/hindiBadWords.json" assert { type: "json" };
+import leoProfanity from "leo-profanity";
 
-// const filter = new Filter();
-// filter.addWords(...rawHindiBadWords);
+import { isSpamming} from "@/lib/rateLimiter";
 
-// const hindiRegexPatterns = rawHindiBadWords.map(pattern => new RegExp(pattern, "i"));
 
-// function normalizeContent(str: string) {
-//   return str
-//     .toLowerCase()
-//     .replace(/0/g, "o")
-//     .replace(/1/g, "i")
-//     .replace(/3/g, "e")
-//     .replace(/4/g, "a")
-//     .replace(/5/g, "s")
-//     .replace(/7/g, "t")
-//     .replace(/@/g, "a")
-//     .replace(/[^a-zA-Z0-9\s\u0900-\u097F]/g, "")
-//     .replace(/(.)\1+/g, "$1");
-// }
-
-// export async function POST(request: Request) {
-//   try {
-//     await dbConnect();
-//     const { username, content } = await request.json();
-//     const normalized = normalizeContent(content);
-
-//     const user = await UserModel.findOne({ username });
-
-//     if (!user) {
-//       return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
-//     }
-
-//     if (!user.isAcceptingMessage) {
-//       return NextResponse.json({ success: false, message: "User is not accepting messages at the moment" }, { status: 403 });
-//     }
-
-//     // ✅ Always run moderation — remove session/premium condition
-//     const matchedProfanity = hindiRegexPatterns.some((regex) => regex.test(normalized));
-//     if (filter.isProfane(content) || matchedProfanity) {
-//       return NextResponse.json(
-//         {
-//           success: false,
-//           message: "⚠️ Inappropriate content detected. Message not sent.",
-//         },
-//         { status: 403 }
-//       );
-//     }
-
-//     const newMessage: IMessage = {
-//       content,
-//       createdAt: new Date(),
-//     } as IMessage;
-
-//     user.messages.push(newMessage);
-//     await user.save();
-
-//     return NextResponse.json({ success: true, message: "Message sent successfully" }, { status: 200 });
-//   } catch (error) {
-//     console.error("🔥 POST error:", error);
-//     return NextResponse.json(
-//       { success: false, message: `Server error: ${error instanceof Error ? error.message : "Unknown error"}` },
-//       { status: 500 }
-//     );
-//   }
-// }
 
 // without adding any badword filter working fine 
 // export async function POST(request: Request) {
@@ -119,7 +59,6 @@ import rawHindiBadWords from "@/lib/hindiBadWords.json" assert { type: "json" };
 
 
 // Import `leo-profanity` and methods you need
-import leoProfanity from "leo-profanity";
 
 // Add English and Hindi bad words to the profanity filter
 leoProfanity.loadDictionary("en");
@@ -194,6 +133,14 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { success: false, message: "User is not accepting messages at the moment" },
       { status: 403 }
+    );
+  }
+// spam checking here
+  const uid = user._id.toString();
+  if (isSpamming(uid)) {
+    return NextResponse.json(
+      { success: false, message: "You’re sending messages too quickly. Please wait a moment." },
+      { status: 429 }
     );
   }
 
