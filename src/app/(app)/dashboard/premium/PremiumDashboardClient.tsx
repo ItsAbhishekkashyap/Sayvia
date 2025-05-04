@@ -10,7 +10,7 @@ import { toast } from "@/components/ui/use-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Check, Crown, Palette, Link2, Zap, Shield, Ban, BarChart } from "lucide-react";
-import { Bar } from 'react-chartjs-2';
+// import { Bar } from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -79,9 +79,9 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
     const isLoading = sessionData.status === "loading";
     const isAuthenticated = sessionData.status === "authenticated";
 
-    
 
-    
+
+
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -182,7 +182,7 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
                 className="max-w-6xl mx-auto mt-20 p-4 sm:p-6 space-y-8"
             >
                 <div className="text-center">
-                    <Badge variant="secondary" className="mb-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white">
+                    <Badge  className="mb-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white">
                         <Crown className="w-4 h-4 mr-1" /> PREMIUM MEMBER
                     </Badge>
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -351,19 +351,20 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
                                     </CardHeader>
                                     <CardContent>
                                         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <p className="font-medium">Auto-filter Inappropriate Content</p>
-                                                <p className="text-sm text-gray-500">
-                                                    {moderation ? "Active" : "Inactive"} - detects and removes harmful messages
-                                                </p>
+                                            <div className="flex items-center space-x-2">
+                                                <span className="text-sm font-medium">
+                                                    Auto-filter Inappropriate Content:
+                                                </span>
+                                                <span
+                                                    className={`px-2 py-1 rounded-full text-xs font-semibold ${moderation ? "bg-green-100 text-green-800" : "bg-gray-200 text-gray-600"
+                                                        }`}
+                                                >
+                                                    {moderation ? "ON" : "OFF"}
+                                                </span>
                                             </div>
-                                            <Switch
-                                                checked={moderation}
-                                                onCheckedChange={() => setModeration(!moderation)}
-                                                className="data-[state=checked]:bg-red-500 data-[state=unchecked]:bg-gray-300"
-                                            />
                                         </div>
                                     </CardContent>
+
                                 </Card>
                             </motion.div>
                         </div>
@@ -404,7 +405,7 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ delay: 0.2 }}
-                            className="h-[70vh]"
+                            className="h-[70vh] "
                         >
                             <SayviaAnalyticsChart
                                 showFullReport={showFullReport}

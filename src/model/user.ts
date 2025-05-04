@@ -29,7 +29,7 @@ export interface IUser extends Document {
   customLink?: { type: String, unique: true, sparse: true, trim: true, lowercase: true, };
 
   aiSuggestions?: boolean;
-  messageModeration?: boolean;
+  messageModeration?: true;
   adFree?: boolean;
 
   // for future analytics

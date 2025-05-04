@@ -243,7 +243,7 @@ export default function FeedbackAnalyticsChart({ showFullReport, handleViewRepor
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-600"
+                        className="text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-600 "
                         onClick={handleReportToggle}
                     >
                         {showFullReport ? "Show Weekly View" : "View Full Report"}

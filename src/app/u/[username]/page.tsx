@@ -16,6 +16,7 @@ export default function MessagePage() {
   const [loading, setLoading] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const [isFetchingUser, setIsFetchingUser] = useState(true)
+  const [moderation, setModeration] = useState<boolean>(true);
 
   // 1. Resolve real username from route param
   useEffect(() => {
@@ -98,6 +99,9 @@ export default function MessagePage() {
       setIsSending(false)
     }
   }
+  
+
+
 
   if (isFetchingUser) {
     return (
@@ -117,14 +121,14 @@ export default function MessagePage() {
 
   return (
     <>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="max-w-2xl mx-auto bg-background text-foreground mb-10 mt-28 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-lg"
       >
         <div className="text-center mb-8">
-          <motion.h1 
+          <motion.h1
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
@@ -136,16 +140,16 @@ export default function MessagePage() {
           </p>
         </div>
 
-        <motion.div 
-            tabIndex={0}
-            className="relative focus:outline-none focus:ring-2 focus:ring-purple-400"
+        <motion.div
+          tabIndex={0}
+          className="relative focus:outline-none focus:ring-2 focus:ring-purple-400"
         >
           <Textarea
             rows={5}
             placeholder="What's on your mind?..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="text-lg p-6 rounded-xl border-2 border-gray-300 dark:border-gray-700 focus:border-purple-500 focus:ring-0"
+            className="text-lg p-6 rounded-xl border-2 border-gray-300 focus:border-purple-500 focus:ring-0"
           />
           <div className="absolute bottom-3 right-3 text-sm text-muted-foreground">
             {message.length}/500
@@ -153,9 +157,9 @@ export default function MessagePage() {
         </motion.div>
 
         <div className="flex flex-col sm:flex-row justify-between gap-4 mt-6">
-          <Button 
-            onClick={fetchSuggestions} 
-            variant="outline" 
+          <Button
+            onClick={fetchSuggestions}
+            variant="outline"
             className="gap-2 border-purple-500 text-purple-600 hover:bg-purple-500/10"
           >
             {loading ? (
@@ -165,25 +169,25 @@ export default function MessagePage() {
             )}
             Inspire Me
           </Button>
-          
-          <Button 
-            onClick={handleSendMessage} 
+
+          <Button
+            onClick={handleSendMessage}
             disabled={!message.trim() || isSending}
-            className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg"
-            size="lg"
+            className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg"
+
           >
             {isSending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
               <Send className="w-4 h-4" />
             )}
-            Send Anonymously
+            <span>Send Anonymously</span>
           </Button>
         </div>
 
         <AnimatePresence>
           {suggestions.length > 0 && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
