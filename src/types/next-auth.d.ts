@@ -10,7 +10,7 @@ declare module 'next-auth' {
     isAcceptingMessages?: boolean;
     resetToken?: string;          // Add if needed in User object
     resetTokenExpiry?: Date; 
-    isPremium: boolean;
+    isPremium?: boolean;
     customLink?: string;
     messages?: any[];
          // Add if needed in User object
@@ -23,10 +23,10 @@ declare module 'next-auth' {
       image?: string | null;
       username?: string;
       _id?: string;
-      username?: string;
+      
       isVerified?: boolean;
       isAcceptingMessages?: boolean;
-      isPremium: boolean;
+      isPremium?: boolean;
       customLink?: string;
       messages?: any[];
       // Add resetToken fields only if you need them in session

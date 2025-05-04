@@ -82,6 +82,10 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             console.log("🔥 SESSION CALLBACK STARTED");
           
+            if(!session.user){
+                console.log("🕵️ session.user is undefined, returning session as is");
+                return session;
+            }
             try {
               const dbUser = await User.findOne({ email: session.user.email });
           
