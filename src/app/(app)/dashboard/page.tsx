@@ -25,6 +25,9 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import Script from 'next/script';
 import { useCustomLink } from '@/context/CustomLinkContext';
+import LoadingSpinner from '@/components/LoadingSpinner';
+
+
 
 export const dynamic = 'force-dynamic';
 
@@ -43,7 +46,9 @@ const Dashboard = () => {
   
 
   const { toast } = useToast();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  
 
   const { customLink, setCustomLink } = useCustomLink();
 
@@ -165,6 +170,9 @@ const Dashboard = () => {
       height: window.innerHeight,
     });
   }, []);
+
+
+  if(status === "loading") return <LoadingSpinner/>
   
     return (
       <div className="relative h-[60vh] w-full mt-10 overflow-hidden bg-gradient-to-br from-indigo-50/50 to-purple-50/50 dark:from-gray-900/80 dark:to-gray-800/80">

@@ -63,6 +63,7 @@ export const metadata = {
 import ClientLayoutWithTheme from "@/components/ClientLayoutWithTheme"; // We'll make this next
 import Script from "next/script";
 import { CustomLinkProvider } from "@/context/CustomLinkContext";
+import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({
   children,
@@ -108,11 +109,13 @@ export default function RootLayout({
 
       </head>
       <body className={inter.className}>
+        <SessionProvider>
         <ThemeProvider>
           <CustomLinkProvider>
           <ClientLayoutWithTheme>{children}</ClientLayoutWithTheme>
           </CustomLinkProvider>
         </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
