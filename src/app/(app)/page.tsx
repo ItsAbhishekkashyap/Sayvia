@@ -121,7 +121,7 @@ const Home = () => {
             {
               icon: <Shield className="h-10 w-10 text-purple-400" />,
               title: "Anonymous Messaging",
-              description: "Receive messages without revealing your identity."
+              description: "Receive honest messages without revealing other identity."
             },
             {
               icon: <Sparkles className="h-10 w-10 text-pink-400" />,
