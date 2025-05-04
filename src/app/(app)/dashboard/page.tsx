@@ -21,15 +21,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sparkles, Lock } from "lucide-react";
 import { redirect, useRouter } from 'next/navigation';
 import { Footer } from '@/components/Footer';
-import { authOptions } from '@/app/api/auth/[...nextauth]/options';
-import { getServerSession } from 'next-auth';
+
 import Script from 'next/script';
 import { useCustomLink } from '@/context/CustomLinkContext';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import dynamic from 'next/dynamic';
 
 
 
-export const dynamic = 'force-dynamic';
 
 
 
