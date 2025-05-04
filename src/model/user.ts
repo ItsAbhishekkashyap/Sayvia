@@ -2,13 +2,13 @@ import mongoose, { Schema, Document, Types, model, models } from "mongoose";
 
 // Message Interface & Schema remains same
 export interface IMessage extends Document {
-  userId: string;
+  // userId: string;
   content: string;
   createdAt: Date;
 }
 
 const MessageSchema: Schema<IMessage> = new Schema({
-  userId: { type: String, required: true },
+  // userId: { type: String, required: false },
   content: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });

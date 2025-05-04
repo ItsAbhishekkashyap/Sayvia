@@ -4,11 +4,9 @@ import UserModel, { IMessage } from "@/model/user";
 import rawHindiBadWords from "@/lib/hindiBadWords.json" assert { type: "json" };
 import leoProfanity from "leo-profanity";
 
-import { isSpamming} from "@/lib/rateLimiter";
+import { isSpamming } from "@/lib/rateLimiter";
 
-
-
-// without adding any badword filter working fine 
+// without adding any badword filter working fine
 // export async function POST(request: Request) {
 //   await dbConnect();
 
@@ -54,22 +52,19 @@ import { isSpamming} from "@/lib/rateLimiter";
 //   }
 // }
 
-
-// trying to check new code if working working here or not 
-
+// trying to check new code if working working here or not
 
 // Import `leo-profanity` and methods you need
 
 // Add English and Hindi bad words to the profanity filter
 leoProfanity.loadDictionary("en");
 
-
 // Build your Hindi regex tests
-const hindiPatterns = (rawHindiBadWords as string[])
-  .map(pat => new RegExp(pat, "i"));
+const hindiPatterns = (rawHindiBadWords as string[]).map(
+  (pat) => new RegExp(pat, "i")
+);
 
-
-  // Normalize incoming Hindi (strip leet, collapse repeats, lower)
+// Normalize incoming Hindi (strip leet, collapse repeats, lower)
 function normalizeHindi(str: string) {
   return str
     .toLowerCase()
@@ -85,10 +80,9 @@ function normalizeHindi(str: string) {
     .trim();
 }
 
-
 function isHindiProfane(text: string) {
   const norm = normalizeHindi(text);
-  return hindiPatterns.some(rx => rx.test(norm));
+  return hindiPatterns.some((rx) => rx.test(norm));
 }
 
 // Function to check if a content message contains profane words
@@ -100,7 +94,10 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ success: false, message: "Invalid JSON" }, { status: 400 });
+    return NextResponse.json(
+      { success: false, message: "Invalid JSON" },
+      { status: 400 }
+    );
   }
   const { username, content } = body;
   if (typeof username !== "string" || typeof content !== "string") {
@@ -110,38 +107,53 @@ export async function POST(request: Request) {
     );
   }
 
-   // 1) English check
-   const englishProfane = leoProfanity.check(content);
-
-   // 2) Hindi regex check
-   const hindiProfane = isHindiProfane(content);
-
-  // Check for profanity in the message content
-  if (englishProfane || hindiProfane) {
-    return NextResponse.json(
-      { success: false, message: "⚠️ Inappropriate content detected. Message not sent." },
-      { status: 403 }
-    );
-  }
-
   // Find user in the database
   const user = await UserModel.findOne({ username });
   if (!user) {
-    return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+    return NextResponse.json(
+      { success: false, message: "User not found" },
+      { status: 404 }
+    );
   }
   if (!user.isAcceptingMessage) {
     return NextResponse.json(
-      { success: false, message: "User is not accepting messages at the moment" },
+      {
+        success: false,
+        message: "User is not accepting messages at the moment",
+      },
       { status: 403 }
     );
   }
-// spam checking here
-  const uid = user._id.toString();
-  if (isSpamming(uid)) {
-    return NextResponse.json(
-      { success: false, message: "You’re sending messages too quickly. Please wait a moment." },
-      { status: 429 }
-    );
+
+  if (user.isPremium) {
+    // 1) English check
+    const englishProfane = leoProfanity.check(content);
+
+    // 2) Hindi regex check
+    const hindiProfane = isHindiProfane(content);
+
+    // Check for profanity in the message content
+    if (englishProfane || hindiProfane) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "⚠️ Inappropriate content detected. Message not sent.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // spam checking here
+    const uid = user._id.toString();
+    if (isSpamming(uid)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "You’re sending messages too quickly. Please wait a moment.",
+        },
+        { status: 429 }
+      );
+    }
   }
 
   // Append message and save
@@ -149,5 +161,8 @@ export async function POST(request: Request) {
   user.messages.push(newMessage);
   await user.save();
 
-  return NextResponse.json({ success: true, message: "Message sent successfully" }, { status: 200 });
+  return NextResponse.json(
+    { success: true, message: "Message sent successfully" },
+    { status: 200 }
+  );
 }
