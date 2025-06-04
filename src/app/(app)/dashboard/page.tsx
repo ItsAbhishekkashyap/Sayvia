@@ -260,8 +260,8 @@ const Dashboard = () => {
                   className="group flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 font-medium text-white shadow-lg transition-all hover:shadow-xl"
                 >
                   <LogIn className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  <span>Sign In Now</span>
-                  <span>clear your cookies to sign in again</span>
+                  <span>Clear your cookies to sign in again</span>
+                 
                 </Button>
                 
               </motion.div>
