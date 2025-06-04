@@ -262,6 +262,7 @@ const Dashboard = () => {
                 <LogIn className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 <span>Sign In Now</span>
               </Button>
+              <p className="mt-4 text-sm text-muted-foreground">or clear your cookies to sign in again</p>
             </motion.div>
           </motion.div>
         </div>
