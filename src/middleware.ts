@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
-    secureCookie: process.env.NODE_ENV === "production", // Add this line
+    secureCookie: process.env.NODE_ENV === "production", 
   });
 
   console.log("Cookies:", request.cookies.getAll());
@@ -57,6 +57,6 @@ export const config = {
     '/sign-up',
     '/verify/:path*',
     '/dashboard/:path*',
-    // ⚠️ Don't try to negate API paths here — we excluded it manually above
+    
   ]
 };

@@ -9,6 +9,7 @@ import LayoutWithTheme from "@/components/LayoutWithTheme";
 import SupportButton from "@/components/SupportButton";
 import { MessageCircleHeart } from "lucide-react";
 import Script from "next/script";
+import { Providers } from "./Providers";
 // import { CustomLinkProvider } from "@/context/CustomLinkContext";
 
 
@@ -98,19 +99,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       </head>
       <body className={inter.className}>
-        <ThemeProvider>
-          <AuthProvider>
-            <LayoutWithTheme>
+        {/* <Providers> */}
+        {/* <ThemeProvider> */}
+          {/* <AuthProvider> */}
+            {/* <LayoutWithTheme> */}
               
-              {children}
+              {/* {children} */}
               
 
-            </LayoutWithTheme>
-            <SupportButton />
+            {/* </LayoutWithTheme> */}
+            {/* <SupportButton /> */}
             {/* <div className="fixed bottom-4 right-4 bg-yellow-500 rounded-full text-white p-4">support</div> */}
-            <Toaster />
-          </AuthProvider>
-        </ThemeProvider>
+            {/* <Toaster /> */}
+          {/* </AuthProvider> */}
+        {/* </ThemeProvider> */}
+        {/* </Providers> */}
+
+          <ThemeProvider>
+        <Providers>
+          {children}
+          <SupportButton/>
+          <Toaster/>
+        </Providers>
+          </ThemeProvider>
+
+        
+
+
       </body>
     </html>
   );

@@ -279,7 +279,7 @@ export default function PremiumDashboardClient({ session }: PremiumDashboardClie
 
                                     <CardContent className="space-y-2">
                                         <div className="flex items-center bg-gray-50 px-4 py-3 rounded-lg border border-gray-200">
-                                            <span className="text-gray-500">sayvia.com/u/</span>
+                                            <span className="text-gray-500">sayvia.xyz/u/</span>
                                             <input
                                                 type="text"
                                                 placeholder={session?.user?.username || "yourname"}

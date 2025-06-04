@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { Providers } from "../Providers";
 
 export const metadata = {
 
@@ -85,7 +86,11 @@ export default function RootLayout({
 
 
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>
+        {children}
+        </Providers>
+        </body>
     </html>
   )
 }
