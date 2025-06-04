@@ -459,33 +459,6 @@ const Home = () => {
 
 
 
-      {/* Footer */}
-      {/* <footer className="w-full py-8 border-t border-purple-900/20 mt-auto bg-background/40 backdrop-blur-sm">
-        <div className="container px-4 md:px-6 flex flex-col items-center space-y-4">
-          <p className="text-sm text-muted-foreground flex items-center">
-            <Sparkles className="h-4 w-4 mr-1 text-purple-400" />
-            © 2025 <span className="font-semibold ml-1 text-purple-500">Sayvia✨</span>. All rights reserved.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-            <Link href="/privacy-policy" className="hover:text-purple-500 transition-colors duration-200">
-              Privacy Policy
-            </Link>
-            <Link href="/terms-and-conditions" className="hover:text-purple-500 transition-colors duration-200">
-              Terms & Conditions
-            </Link>
-            <Link href="/cancellation-refund-policy" className="hover:text-purple-500 transition-colors duration-200">
-              Cancellation & Refund Policy
-            </Link>
-            <Link href="/shipping-delivery-policy" className="hover:text-purple-500 transition-colors duration-200">
-              Shipping & Delivery Policy
-            </Link>
-            <Link href="/contact" className="hover:text-purple-500 transition-colors duration-200">
-              Contact Us
-            </Link>
-          </div>
-        </div>
-      </footer> */}
       <Footer />
     </div>
   );
