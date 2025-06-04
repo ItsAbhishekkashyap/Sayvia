@@ -184,27 +184,27 @@ export default function UpgradePage() {
       </li>
     </ul>
 
-{session? (user?.isPremium && (
-  <Link href="/dashboard/premium">
-  <Button
-  onClick={handleUpgrade}
-  className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-600 px-8 py-6 text-lg font-bold text-white shadow-xl transition-all duration-300 ease-in-out hover:from-yellow-500 hover:to-amber-700 hover:scale-105"
->
-  <span className="mr-2">See Your Power</span>
-  <span className="animate-bounce">💥</span>
-</Button>
-</Link>
-
-))
- : (!user?.isPremium && (
-  <Button
+{session ? (
+  user?.isPremium ? (
+    <Link href="/dashboard/premium">
+      <Button
+        onClick={handleUpgrade}
+        className="group relative inline-flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-600 px-8 py-6 text-lg font-bold text-white shadow-xl transition-all duration-300 ease-in-out hover:from-yellow-500 hover:to-amber-700 hover:scale-105"
+      >
+        <span className="mr-2">See Your Power</span>
+        <span className="animate-bounce">💥</span>
+      </Button>
+    </Link>
+  ) : (
+    <Button
       onClick={handleUpgrade}
       className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg px-8 py-6 text-lg font-semibold rounded-xl"
     >
       🔓 Unlock Premium for Free
     </Button>
- ))
-}
+  )
+) : null}
+
     {/* <Button
       onClick={handleUpgrade}
       className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg px-8 py-6 text-lg font-semibold rounded-xl"
